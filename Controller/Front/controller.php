@@ -160,7 +160,7 @@ function product($idProduct = '') {
 //    );
 //    require_once '../../View/productos.php';
 // cargamos segun id
-    $product = array('name' => 'product1',
+    $product  = array('name' => 'product1',
         'id' => '01',
         'description' => 'description product lang 1',
         'characteristic' => 'characteristic product 1',
@@ -235,4 +235,4 @@ function redire() {
     header('Location: ../home');
 }
 
-require_once './main.php';
+require_once '../main.php';
