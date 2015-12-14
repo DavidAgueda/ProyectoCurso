@@ -16,9 +16,9 @@ $navegador = array(
 $navegadorAdmin = array(
     array('string' => 'Client list ', 'url' => 'controller.php?f=clientList'),
     array('string' => 'Products', 'url' => 'controller.php?f=productList'), // lista con todos los productos buscar por categoria nombre...
-    array('string' => 'Orders', 'url' => ''), // lista de los ordenes y estado
-    array('string' => 'Categorys', 'url' => ''), // lista de las categorias // suprimir anadir
-    array('string' => 'Dashboard', 'url' => ''), // pagina principal
+    array('string' => 'Orders', 'url' => 'controller.php?f=orders'), // lista de los ordenes y estado
+    array('string' => 'Categorys', 'url' => 'controller.php?f=category'), // lista de las categorias // suprimir anadir
+    array('string' => 'Dashboard', 'url' => 'controller.php?f=index'), // pagina principal
     array('string' => 'Logout', 'url' => '')
 );
 
@@ -219,6 +219,75 @@ function product() {
     );
 
     require_once '../../View/Back/Product.php';
+}
+
+function orders(){
+    
+    global $navegador;
+    global $navegadorAdmin;
+
+    $titulo = 'Titulo';
+    $description = 'description';
+    $palabrasClaves = 'palabrasClaves';
+    // Obtener type user
+    $userType = 'admin';
+//    $userType = 'user';
+
+    if ($userType == 'user') {
+        
+    } elseif ($userType == 'admin') {
+        $navegador = $navegadorAdmin;
+    }
+    
+    
+    echo '<h1>orders list</h1>';
+    echo '<p>cambiar estado, buscar por terminados, pendientes, enviadas, acuse de recivo, enlace con el cliente y la lista de productos que contiene s</p>';
+}
+
+function order(){
+    
+    global $navegador;
+    global $navegadorAdmin;
+
+    $titulo = 'Titulo';
+    $description = 'description';
+    $palabrasClaves = 'palabrasClaves';
+    // Obtener type user
+    $userType = 'admin';
+//    $userType = 'user';
+
+    if ($userType == 'user') {
+        
+    } elseif ($userType == 'admin') {
+        $navegador = $navegadorAdmin;
+    }
+    
+    
+    echo '<h1>un order en concreto</h1>';
+    echo '<p>cancelar o modificar</p>';
+}
+
+function category(){
+    
+    global $navegador;
+    global $navegadorAdmin;
+
+    $titulo = 'Titulo';
+    $description = 'description';
+    $palabrasClaves = 'palabrasClaves';
+    // Obtener type user
+    $userType = 'admin';
+//    $userType = 'user';
+
+    if ($userType == 'user') {
+        
+    } elseif ($userType == 'admin') {
+        $navegador = $navegadorAdmin;
+    }
+    
+    
+    echo '<h1>muestra Categorias</h1>';
+    echo '<p>añadir categorias corregir las que existen</p>';
 }
 
 function contact() {
