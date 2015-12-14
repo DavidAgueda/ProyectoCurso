@@ -1,0 +1,14 @@
+RewriteEngine on
+#hay que modificar esto
+ErrorDocument 404  /webs/mio/tienda/error/404.php
+
+
+RewriteEngine On    # Turn on the rewriting engine
+RewriteRule    ^home/?$    Controller/Front/controller.php?f=index    [NC,L]    
+RewriteRule    ^contact/?$    model/model.php?f=contact    [NC,L]    
+# Handle requests for "pet-care"
+
+RewriteRule    ^oferta/([0-9]+)/?$   Model/model.php?f=tresOpciones&o=$1    [NC,L]  
+# Cambiar por lo de arriba si tenemos mas de una pagina productos  
+RewriteRule    ^productos/?$   Model/model.php?f=productos    [NC,L]    
+# Handle product requests
