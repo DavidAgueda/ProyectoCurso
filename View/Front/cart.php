@@ -51,7 +51,11 @@
                         <li class="activo"><a href="../../index.php">Home</a></li>
                         <?php
                         for ($i = 0; $i < count($navegador); $i++) {
-                            echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            if ($navegador[$i]['string'] == 'Cart') {
+                                echo '<li><a  id="cart" href="' . $navegador[$i]['url'] . '"><span class="glyphicon glyphicon-shopping-cart"> </span> ' . $navegador[$i]['string'] . '</a></li>';
+                            } else {
+                                echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            }
                         }
                         ?>
                         <li><a href="controller.php?f=contact">Contact</a></li>
@@ -80,19 +84,26 @@
                 <table class="table">
 
                     <tbody>
-                        <?php for ($i = 0; $i < count($listProductsCart); $i++) { ?>
-                            <tr>
-                                <td>
-                                    <img src="../../img/<?php echo $listProductsCart[$i]['img'] ?>" alt="" style="width:150px;height:150px;">
+                        <?php
+                        if (isset($listProductsCart)) {
+                            for ($i = 0; $i < count($listProductsCart); $i++) {
+                                ?>
+                                <tr>
+                                    <td>
+                                        <img src="../../img/<?php echo $listProductsCart[$i]['img'] ?>" alt="" style="width:150px;height:150px;">
                                     </td>
-                                <td>
-                                    <h3><?php echo $listProductsCart[$i]['name'] ?></h3>
-                                    <p><?php echo $listProductsCart[$i]['description'] ?></p>
-                                </td>
-                                <td><?php echo $listProductsCart[$i]['price'] ?></td>
-                                <td><button class ="btn-danger">remove from cart </button></td>
-                            </tr>
-                        <?php } ?>
+                                    <td>
+                                        <h3><?php echo $listProductsCart[$i]['name'] ?></h3>
+                                        <p><?php echo $listProductsCart[$i]['description'] ?></p>
+                                    </td>
+                                    <td><?php echo $listProductsCart[$i]['price'] ?></td>
+                                    <td><button  onclick="removeCookie(<?php echo $listProductsCart[$i]['id'] ?>)" class ="bnt btn-danger" role="button">remove from cart </button></td>
+                                </tr>
+                            <?php 
+                            }
+                        }
+                           
+                        ?>
 
                     </tbody>
                 </table>
@@ -110,5 +121,6 @@
         <script src="../../js/vendor/bootstrap.min.js"></script>
 
         <script src="../../js/main.js"></script>
+        <script src="../../js/cart.js"></script>
     </body>
 </html>

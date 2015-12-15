@@ -114,7 +114,7 @@ function products($category = '') {
     foreach ($requete as $key => $value) {
         $product = new ProductClass($connection);
         $product->fetch($value['idRow']);
-        
+
         if (!isset($product->imgs[0]['name'])) {
             $img = 'not-found.png';
         } else {
@@ -165,49 +165,54 @@ function product($idProduct = '') {
         $product->imgs = array('not-found.png');
     }
     $product = array('name' => $product->name,
-        'id' => '01',
+        'id' => $product->id,
         'description' => $product->longDescription,
         'price' => $product->price,
         'imgs' => $product->imgs
     );
 
-    setcookie('cart' , '');
-    var_dump($_COOKIE);
-
-
-
-
     require_once '../../View/Front/product.php';
 }
 
 function cart() {
+    require_once '../../Model/ProductClass.php';
     global $navegador;
+    global $connection;
     $titulo = 'Cart';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
+    
+    if ($_COOKIE['Products'] != '[]') {
+        $productsCart = $_COOKIE['Products'];
 
-    // Cargamos segun la cookis
 
-    $listProductsCart = array(
-        array('name' => 'product1',
-            'description' => 'Description de product1',
-            'price' => '001',
-            'img' => 'not-found.png',
-            'id' => '01'
-        ),
-        array('name' => 'product2',
-            'description' => 'Description de product2',
-            'price' => '002',
-            'img' => 'not-found.png',
-            'id' => '02'
-        ),
-        array('name' => 'product3',
-            'description' => 'Description de product2',
-            'price' => '003',
-            'img' => 'not-found.png',
-            'id' => '03'
-        )
-    );
+        $productsCart = str_replace("[", "", $productsCart);
+        $productsCart = str_replace("]", "", $productsCart);
+
+        $productsCart = explode(",", $productsCart);
+
+//        var_dump($productsCart);
+
+        foreach ($productsCart as $key => $value) {
+            $product = new ProductClass($connection);
+            $product->fetch($value);
+
+            if (!isset($product->imgs[0]['name'])) {
+                $img = 'not-found.png';
+            } else {
+                $img = $product->imgs[0]['name'];
+            }
+
+            $listProductsCart[] = array(
+                'name' => $product->name,
+                'description' => $product->description,
+                'price' => $product->price,
+                'img' => $img,
+                'id' => $product->id
+            );
+        }
+    }
+
 
     require_once '../../View/Front/cart.php';
 }

@@ -52,7 +52,11 @@
                         <li class="active"><a href="../../index.php">Home</a></li>
                         <?php
                         for ($i = 0; $i < count($navegador); $i++) {
-                            echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            if ($navegador[$i]['string'] == 'Cart') {
+                                echo '<li><a  id="cart" href="' . $navegador[$i]['url'] . '"><span class="glyphicon glyphicon-shopping-cart"> </span> ' . $navegador[$i]['string'] . '</a></li>';
+                            } else {
+                                echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            }
                         }
                         ?>
                         <li><a href="controller.php?f=contact">Contact</a></li>
@@ -90,18 +94,18 @@
                     </div>
 
                     <!-- Select Basic -->
-<!--                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="type">Proyecto</label>
-                        <div class="col-md-4">
-                            <select id="type" name="type" class="form-control">
-                                <?php
+                    <!--                    <div class="form-group">
+                                            <label class="col-md-4 control-label" for="type">Proyecto</label>
+                                            <div class="col-md-4">
+                                                <select id="type" name="type" class="form-control">
+                    <?php
 //                                for ($i = 0; $i < count($options); $i++) {
 //                                    echo '<option value="' . $options[$i]['value'] . '">' . $options[$i]['string'] . '</option>';
 //                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>-->
+                    ?>
+                                                </select>
+                                            </div>
+                                        </div>-->
 
                     <!-- Textarea -->
                     <div class="form-group">
@@ -133,6 +137,7 @@
         <script src="../../js/vendor/bootstrap.min.js"></script>
 
         <script src="../../js/main.js"></script>
+        <script src="../../js/cart.js"></script>
 
     </body>
 </html>

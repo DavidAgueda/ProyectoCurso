@@ -62,7 +62,11 @@
                         <li class="activo"><a href="../../index.php">Home</a></li>
                         <?php
                         for ($i = 0; $i < count($navegador); $i++) {
-                            echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            if ($navegador[$i]['string'] == 'Cart') {
+                                echo '<li><a  id="cart" href="' . $navegador[$i]['url'] . '"><span class="glyphicon glyphicon-shopping-cart"> </span> ' . $navegador[$i]['string'] . '</a></li>';
+                            } else {
+                                echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            }
                         }
                         ?>
                         <li><a href="controller.php?f=contact">Contact</a></li>
@@ -155,6 +159,6 @@
         <script src="../../js/vendor/bootstrap.min.js"></script>
 
         <script src="../../js/main.js"></script>
-
+        <script src="../../js/cart.js"></script>
     </body>
 </html>

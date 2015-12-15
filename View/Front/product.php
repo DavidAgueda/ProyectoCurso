@@ -21,6 +21,7 @@
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
+
         </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
@@ -28,9 +29,9 @@
         <script src="../../js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body>
-<!--        [if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <!--        [if lt IE 8]>
+                    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+                <![endif]-->
         <div class="jumbotron">
             <h1><?php echo $titulo; ?></h1>
             <p><?php echo $description; ?> ...</p>
@@ -51,7 +52,11 @@
                         <li class="activo"><a href="../../index.php">Home</a></li>
                         <?php
                         for ($i = 0; $i < count($navegador); $i++) {
-                            echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            if ($navegador[$i]['string'] == 'Cart') {
+                                echo '<li><a  id="cart" href="' . $navegador[$i]['url'] . '"><span class="glyphicon glyphicon-shopping-cart"> </span> ' . $navegador[$i]['string'] . '</a></li>';
+                            } else {
+                                echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
+                            }
                         }
                         ?>
                         <li><a href="controller.php?f=contact">Contact</a></li>
@@ -78,16 +83,15 @@
 
                 <div class="carousel-inner" role="listbox">
                     <?php
-                    
 //                                            var_dump($product['imgs']);
                     for ($i = 0; $i < count($product['imgs']); $i++) {
                         if ($i == 0) {
                             echo '<div class = "item active">
-                                            <img src="../../img/'.$product['imgs'][$i]['name'].'" alt="'.$product['imgs'][$i]['alt'].'" style="width:400px;height:400px;">
+                                            <img src="../../img/' . $product['imgs'][$i]['name'] . '" alt="' . $product['imgs'][$i]['alt'] . '" style="width:400px;height:400px;">
                                         </div>';
                         } else {
                             echo '<div class = "item ">
-                                            <img src="../../img/'.$product['imgs'][$i]['name'].'" alt="'.$product['imgs'][$i]['alt'].'" style="width:400px;height:400px;">   
+                                            <img src="../../img/' . $product['imgs'][$i]['name'] . '" alt="' . $product['imgs'][$i]['alt'] . '" style="width:400px;height:400px;">   
                                         </div>';
                         }
                     }
@@ -121,17 +125,18 @@
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
+
                 <div class="col-md-12">
-<!--                    <h2><?php echo  $product['name']?></h2>-->
-                <p>
-                   
-                   <?php echo  $product['description']?>
-                </p>
-                <p>
-                   
-                   <?php echo  $product['price']?>
-                </p>
-                <a class="btn btn-default" href="" role="button">Add Cart</a>
+<!--                    <h2><?php echo $product['name'] ?></h2>-->
+                    <p>
+
+                        <?php echo $product['description'] ?>
+                    </p>
+                    <p>
+
+                        <?php echo $product['price'] ?>
+                    </p>
+                    <button onclick ="addCookie(<?php echo $product['id']; ?>)" class="btn btn-default" href="" role="button">Add Cart</button>
                 </div>
 
             </div>
@@ -141,13 +146,15 @@
             <footer>
                 <p>&copy; Company 2015</p>
             </footer>
-            
-                    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+
+        </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
         <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-1.11.2.js"><\/script>')</script>
 
         <script src="../../js/vendor/bootstrap.min.js"></script>
 
         <script src="../../js/main.js"></script>
-  
+
+        <script src="../../js/cart.js"></script>
+
     </body>
 </html>
