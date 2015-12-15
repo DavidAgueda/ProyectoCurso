@@ -44,7 +44,7 @@ class ProductClass {
         $sql = 'SELECT * FROM `product` WHERE `idRow` =\'' . $id . '\'';
         $product = $this->conex->commitSelect($sql);
         $sql = 'SELECT * FROM `images` WHERE `idProduct` =\'' . $id . '\'';
-         $imgs= $this->conex->commitSelect($sql);
+        $imgs= $this->conex->commitSelect($sql);
          
 //         var_dump($imgs);
         

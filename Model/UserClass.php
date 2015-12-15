@@ -23,20 +23,24 @@ class UserClass {
     var $email;
     var $sexe;
     var $address;
+    var $roll;
     var $db;
+    var $conex;
 
-    public function __construct($connection, $user ='', $pass='', $email='', $name='', $lastName='', $date='', $sexe='', $address='') {
+    public function __construct($connection, $user = '', $pass = '', $email = '', $name = '', $lastName = '', $date = '', $sexe = '', $address = '', $roll = '') {
+        $this->conex = $connection;
         $this->db = $connection->db;
 
 //        $this->id       =;
-        $this->user     = $user;
-        $this->pass     = $pass;
-        $this->name     = $name;
+        $this->user = $user;
+        $this->pass = $pass;
+        $this->name = $name;
         $this->lastName = $lastName;
-        $this->date     = $date; 
-        $this->email    = $email;
-        $this->sexe     = $sexe;
-        $this->address  = $address;
+        $this->date = $date;
+        $this->email = $email;
+        $this->sexe = $sexe;
+        $this->address = $address;
+        $this->roll = $roll;
     }
 
     public function login() {
@@ -68,9 +72,12 @@ class UserClass {
         $result = $conn->query($sql);
         if ($result) {
             foreach ($result as $row) {
+//                var_dump($row);
+                $this->id = $row['idRow'];
                 $this->user = $row['user'];
                 $this->pass = $row['pass'];
                 $this->name = $row['name'];
+                $this->roll = $row['idRoll'];
                 return array($row['user'], $row['pass'], $row['name']);
             }
         }
@@ -82,13 +89,26 @@ class UserClass {
     public function setInDB() {
         $conn = $this->db;
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = 'INSERT INTO user(user, pass, name, creationDate) VALUES (\'' . $this->user . '\',\'' . $this->pass . '\',\'' . $this->name . '\',\'' . date('Y-m-d') . '\')';
+        $sql = 'INSERT INTO user(user, pass, name) VALUES (\'' . $this->user . '\',\'' . $this->pass . '\',\'' . $this->name . '\')';
         try {
             $requete = $conn->prepare($sql);
             $rel = $requete->execute();
         } catch (Exception $exc) {
             echo 'Error : ' . $exc->getMessage();
         }
+    }
+
+    public function fetch($id = '') {
+        // buscar por id 
+        // devuelve los datos producto
+        $sql = 'SELECT * FROM `user` WHERE `idRow` =\'' . $id . '\'';
+        $user = $this->conex->commitSelect($sql);
+
+        $this->id   = $user[0]['idRow'];
+        $this->user = $user[0]['user'];
+        $this->pass = $user[0]['pass'];
+        $this->name = $user[0]['name'];
+        $this->roll = $user[0]['idRoll'];
     }
 
 }

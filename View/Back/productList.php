@@ -28,9 +28,9 @@
         <script src="../../js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body>
-<!--        [if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <!--        [if lt IE 8]>
+                    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+                <![endif]-->
         <div class="jumbotron">
             <h1><?php echo $titulo; ?></h1>
             <p><?php echo $description; ?></p>
@@ -50,7 +50,6 @@
                     <ul class="nav navbar-nav">
                         <li class="activo"><a href="../../index.php">Home</a></li>
                         <?php
-
                         for ($i = 0; $i < count($navegador); $i++) {
                             echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
                         }
@@ -63,19 +62,19 @@
 
         <div class="container">
             <!-- Example row of columns -->
-            
+
             <?php
 //                                    var_dump($listProducts);
             ?>
             <div class="row">
-Buscar por nombre, por referencia, por categoria, portada?
-                
+                Buscar por nombre, por referencia, por categoria, portada?
+
             </div>
             <div class="row">
                 <table class="table">
 
                     <tbody>
-                        
+
                         <?php for ($i = 0; $i < count($listProducts); $i++) { ?>
                             <tr>
                                 <td>
@@ -83,25 +82,24 @@ Buscar por nombre, por referencia, por categoria, portada?
                                 </td>
                                 <td>
                                     <ul>
-                                    <li><b>Name : </b> <?php echo $listProducts[$i]['name'] ?></li>
-                                    <li><b>Small Description : </b><?php echo $listProducts[$i]['description'] ?></li>
-                                    <li><b>Long Description: </b><?php echo $listProducts[$i]['longDescription'] ?></li>
-                                    <li><b>Characteristics : </b><?php echo $listProducts[$i]['characteristics'] ?></li>
+                                        <li><b>Name : </b> <?php echo $listProducts[$i]['name'] ?></li>
+                                        <li><b>Small Description : </b><?php echo $listProducts[$i]['description'] ?></li>
+                                        <li><b>Long Description: </b><?php echo $listProducts[$i]['longDescription'] ?></li>
                                     </ul>
                                 </td>
                                 <td>
                                     <img src="../../img/<?php echo $listProducts[$i]['img'] ?>" alt="" style="width:200px;height:200px;">
-                                    
-                                       
-                                    
+
+
+
                                 </td>
                                 <td>
                                     <b>Price : </b><?php echo $listProducts[$i]['price'] ?>
-                                    
-                                       
-                                    
+
+
+
                                 </td>
-<!--                                <td><?php echo $listProductsCart[$i]['price'] ?></td>-->
+    <!--                                <td><?php echo $listProductsCart[$i]['price'] ?></td>-->
                                 <td> <a class ="btn-danger" href="controller.php?f=product">Change </a></td>
                             </tr>
                         <?php } ?>
@@ -115,25 +113,25 @@ Buscar por nombre, por referencia, por categoria, portada?
             <footer>
                 <p>&copy; Company 2015</p>
             </footer>
-            
-                    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+
+        </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
         <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-1.11.2.js"><\/script>')</script>
 
         <script src="../../js/vendor/bootstrap.min.js"></script>
 
         <script src="../../js/main.js"></script>
-        
+
         <script>
-            $(document).ready(function(){
+            $(document).ready(function () {
                 $('.address').hide();
             })
-            function hiddenAddress(button){
+            function hiddenAddress(button) {
 //                console.log(button);
                 console.log();
                 $(button).next().toggle();
             }
         </script>
-            
-  
+
+
     </body>
 </html>

@@ -1,5 +1,18 @@
 <?php
-    session_start();
+
+session_start();
+$viewLogin = false;
+if (isset($_SESSION['viewLogin'])) {
+    $viewLogin = $_SESSION['viewLogin'];
+//        
+}
+if (!$viewLogin) {
+    header('Location: ../Front/controller.php?f=index');
+}
+//    var_dump($_SESSION);
+// puedo crear un usuario que pueda modificar suprimir ...
+require_once '../../app/connection/Connexion.php';
+$connection = new Connexion('Ecommerce', 'localhost', 'root', '');
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +24,7 @@ $navegador = array(
     array('string' => 'Order Tracking', 'url' => ''), // esto puede ser el home
     array('string' => 'Placed orders', 'url' => ''), // pasarle un dato para usarlo con admin 
     array('string' => 'My profile ', 'url' => ''), // pasarle un dato para usarlo con admin 
-    array('string' => 'Logout', 'url' => '')
+    array('string' => 'Logout', 'url' => 'controller.php?f=logout')
 );
 $navegadorAdmin = array(
     array('string' => 'Client list ', 'url' => 'controller.php?f=clientList'),
@@ -19,29 +32,46 @@ $navegadorAdmin = array(
     array('string' => 'Orders', 'url' => 'controller.php?f=orders'), // lista de los ordenes y estado
     array('string' => 'Categorys', 'url' => 'controller.php?f=category'), // lista de las categorias // suprimir anadir
     array('string' => 'Dashboard', 'url' => 'controller.php?f=index'), // pagina principal
-    array('string' => 'Logout', 'url' => '')
+    array('string' => 'Logout', 'url' => 'controller.php?f=logout')
 );
 
+function logout() {
+    $_SESSION['viewLogin'] = false;
+    header('Location: ../Front/controller.php?f=index');
+}
+
 function index() {
+
+    require_once '../../Model/UserClass.php';
+
+    global $connection;
     global $navegador;
     global $navegadorAdmin;
 
     $titulo = 'Titulo';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    // Obtener type user
-    $userType = 'admin';
+// Obtener type user
+
+    $user = new UserClass($connection);
+
+    $user->fetch($_SESSION['idRow']);
+    $userType = $user->roll;
 //    $userType = 'user';
 
-    if ($userType == 'user') {
+    if ($userType == '0') {
         require_once '../../View/Back/home.php';
-    } elseif ($userType == 'admin') {
+    } elseif ($userType == '1') {
         $navegador = $navegadorAdmin;
         require_once '../../View/Back/homeAdmin.php';
     }
 }
 
 function clientList() {
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegadorAdmin;
     $navegador = $navegadorAdmin;
 
@@ -98,18 +128,21 @@ function clientList() {
 
         require_once '../../View/Back/clientList.php';
     }
-    // Obtener type user
+// Obtener type user
 }
 
 function client() {
-
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegador;
     global $navegadorAdmin;
 
     $titulo = 'Titulo';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    // Obtener type user
+// Obtener type user
     $userType = 'admin';
 //    $userType = 'user';
 
@@ -143,60 +176,88 @@ function client() {
 }
 
 function productList() {
+    require_once '../../Model/ProductClass.php';
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegadorAdmin;
+    global $connection;
     $navegador = $navegadorAdmin;
 
     $titulo = 'Titulo';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
 
-    $userType = 'admin';
-//    $userType = 'user';
-    if ($userType == 'admin') {
-        $navegador = $navegadorAdmin;
 
-        $listProducts = array(
-            array('name' => 'product1',
-                'description' => 'Description de product1',
-                'longDescription' => 'LONG Description de product1',
-                'characteristics' => 'characteristics',
-                'price' => '001',
-                'img' => 'not-found.png',
-                'id' => '01'
-            ),
-            array('name' => 'product2',
-                'description' => 'Description de product2',
-                'longDescription' => 'LONG Description de product2',
-                'characteristics' => 'characteristics',
-                'price' => '002',
-                'img' => 'not-found.png',
-                'id' => '02'
-            ),
-            array('name' => 'product3',
-                'description' => 'Description de product3',
-                'longDescription' => 'LONG Description de product3',
-                'characteristics' => 'characteristics',
-                'price' => '003',
-                'img' => 'not-found.png',
-                'id' => '03'
-            )
+
+
+//    $send = '';
+//    if (isset($_GET['s'])) {
+//        $send = $_GET['s'];
+//    }
+//
+//    if ($category == '') {
+        $sql = 'SELECT * FROM `product` WHERE name LIKE \'%' . $send . '%\''; //    }elseif($_GET['s'] == ''){
+//    } else {
+//        $sql = 'SELECT * FROM `product` WHERE `idCategory` = \'' . $category . '\' AND name LIKE \'%' . $send . '%\'';
+//    }
+
+    $requete = $connection->commitSelect($sql);
+
+// Cargamos segun la categoria
+
+
+
+    foreach ($requete as $key => $value) {
+        $product = new ProductClass($connection);
+        $product->fetch($value['idRow']);
+
+        if (!isset($product->imgs[0]['name'])) {
+            $img = 'not-found.png';
+        } else {
+            $img = $product->imgs[0]['name'];
+        }
+
+        $listProducts[] = array(
+            'name' => $product->name,
+            'description' => recortar_texto($product->description),
+            'longDescription' => recortar_texto($product->longDescription),
+            'price' => $product->price,
+            'category' => $product->category,
+            'img' => $img,
+            'id' => $product->id
+                
         );
-
-
-        require_once '../../View/Back/productList.php';
     }
-    // Obtener type user
+// cargarlo de categorias 
+    $options = array(
+        array(
+            'value' => '1',
+            'string' => 'Book'
+        ),
+        array(
+            'value' => '2',
+            'string' => 'Music'
+        )
+    );
+
+
+    require_once '../../View/Back/productList.php';
 }
 
 function product() {
-
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegador;
     global $navegadorAdmin;
 
     $titulo = 'Titulo';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    // Obtener type user
+// Obtener type user
     $userType = 'admin';
 //    $userType = 'user';
 
@@ -206,7 +267,7 @@ function product() {
         $navegador = $navegadorAdmin;
     }
 
-    $product  = array('name' => 'product3',
+    $product = array('name' => 'product3',
         'description' => 'Description de product3',
         'longDescription' => 'LONG Description de product3',
         'characteristics' => 'characteristics',
@@ -221,15 +282,18 @@ function product() {
     require_once '../../View/Back/Product.php';
 }
 
-function orders(){
-    
+function orders() {
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegador;
     global $navegadorAdmin;
 
     $titulo = 'Titulo';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    // Obtener type user
+// Obtener type user
     $userType = 'admin';
 //    $userType = 'user';
 
@@ -238,21 +302,24 @@ function orders(){
     } elseif ($userType == 'admin') {
         $navegador = $navegadorAdmin;
     }
-    
-    
+
+
     echo '<h1>orders list</h1>';
     echo '<p>cambiar estado, buscar por terminados, pendientes, enviadas, acuse de recivo, enlace con el cliente y la lista de productos que contiene s</p>';
 }
 
-function order(){
-    
+function order() {
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegador;
     global $navegadorAdmin;
 
     $titulo = 'Titulo';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    // Obtener type user
+// Obtener type user
     $userType = 'admin';
 //    $userType = 'user';
 
@@ -261,21 +328,24 @@ function order(){
     } elseif ($userType == 'admin') {
         $navegador = $navegadorAdmin;
     }
-    
-    
+
+
     echo '<h1>un order en concreto</h1>';
     echo '<p>cancelar o modificar</p>';
 }
 
-function category(){
-    
+function category() {
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegador;
     global $navegadorAdmin;
 
     $titulo = 'Titulo';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    // Obtener type user
+// Obtener type user
     $userType = 'admin';
 //    $userType = 'user';
 
@@ -284,13 +354,17 @@ function category(){
     } elseif ($userType == 'admin') {
         $navegador = $navegadorAdmin;
     }
-    
-    
+
+
     echo '<h1>muestra Categorias</h1>';
     echo '<p>añadir categorias corregir las que existen</p>';
 }
 
 function contact() {
+    global $viewLogin;
+    if (!$viewLogin) {
+        header('Location: ../Front/controller.php?f=index');
+    }
     global $navegador;
     $titulo = 'Contacto';
     $description = 'description';
@@ -331,3 +405,20 @@ function redire() {
 }
 
 require_once '../main.php';
+
+
+function recortar_texto($texto, $limite=100){	
+	$texto = trim($texto);
+	$texto = strip_tags($texto);
+	$tamano = strlen($texto);
+	$resultado = '';
+	if($tamano <= $limite){
+		return $texto;
+	}else{
+		$texto = substr($texto, 0, $limite);
+		$palabras = explode(' ', $texto);
+		$resultado = implode(' ', $palabras);
+		$resultado .= '...';
+	}	
+	return $resultado;
+}

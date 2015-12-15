@@ -1,10 +1,12 @@
 <?php
-    session_start();
+
+session_start();
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+// puedo crear un usuario que pueda leer y crear una cuenta
 require_once '../../app/connection/Connexion.php';
 $connection = new Connexion('Ecommerce', 'localhost', 'root', '');
 //$connection= new Connexion($dataBaseName, $host, $user, $pass);
@@ -217,15 +219,14 @@ function cart() {
     require_once '../../View/Front/cart.php';
 }
 
-
 function login() {
     require_once '../../Model/UserClass.php';
-        $titulo = 'Login';
-        $description = 'Login';
-        $palabrasClaves = 'Login';
-        
+    $titulo = 'Login';
+    $description = 'Login';
+    $palabrasClaves = 'Login';
 
-    
+
+
     global $connection;
     $viewLogin = false;
     if (isset($_SESSION['viewLogin'])) {
@@ -237,27 +238,23 @@ function login() {
 //        $user = new UserClass($connection, $user, $email, $pass, $name, $lastName, $date, $sexe, $address);
         $user = new UserClass($connection, $_POST['user'], $_POST['pass']);
         $viewLogin = $_SESSION['viewLogin'] = $user->login();
-        
-        var_dump($viewLogin);
-        var_dump($user);
 
+        $user->getUser();
+        $_SESSION['idRow'] = $user->id;
         $_POST['user'] = null;
         $_POST['pass'] = null;
-
     }
-    
-    if( $viewLogin ){
-        echo '<h1>redirecciono</h1>';
+
+    if ($viewLogin) {
         header('Location: ../Back/controller.php?f=index');
     }
     if (isset($_POST['close'])) {
-            $_SESSION['viewLogin']= null;
+        $_SESSION['viewLogin'] = null;
     }
-    
-    
-      require_once '../../View/Front/login.php';
-}
 
+
+    require_once '../../View/Front/login.php';
+}
 
 function okMail() {
     global $navegador;
