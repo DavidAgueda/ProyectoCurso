@@ -5,11 +5,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+require_once '../../app/connection/Connexion.php';
+$connection = new Connexion('Ecommerce', 'localhost', 'root', '');
+//$connection= new Connexion($dataBaseName, $host, $user, $pass);
 
 
 $navegador = array(
     array('string' => 'Products ', 'url' => 'controller.php?f=products'),
-    
     array('string' => 'Cart', 'url' => 'controller.php?f=cart'),
     array('string' => 'Login ', 'url' => '')
 );
@@ -68,7 +70,6 @@ function index() {
     require_once '../../View/Front/home.php';
 }
 
-
 function contact() {
     global $navegador;
     $titulo = 'Contacto';
@@ -87,98 +88,97 @@ function contact() {
 }
 
 function products($category = '') {
+    require_once '../../Model/ProductClass.php';
     global $navegador;
+    global $connection;
     $titulo = 'Products';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
+    $send = '';
+    if (isset($_GET['s'])) {
+        $send = $_GET['s'];
+    }
+
+    if ($category == '') {
+        $sql = 'SELECT * FROM `product` WHERE name LIKE \'%' . $send . '%\''; //    }elseif($_GET['s'] == ''){
+    } else {
+        $sql = 'SELECT * FROM `product` WHERE `idCategory` = \'' . $category . '\' AND name LIKE \'%' . $send . '%\'';
+    }
+
+    $requete = $connection->commitSelect($sql);
 
     // Cargamos segun la categoria
 
-    $listProducts = array(
-        array('name' => 'product1',
-            'description' => 'Description de product1',
-            'price' => '001',
-            'img' => 'not-found.png',
-            'id' => '01'
+
+
+    foreach ($requete as $key => $value) {
+        $product = new ProductClass($connection);
+        $product->fetch($value['idRow']);
+        
+        if (!isset($product->imgs[0]['name'])) {
+            $img = 'not-found.png';
+        } else {
+            $img = $product->imgs[0]['name'];
+        }
+
+        $listProducts[] = array(
+            'name' => $product->name,
+            'description' => $product->description,
+            'price' => $product->price,
+            'img' => $img,
+            'id' => $product->id
+        );
+    }
+    // cargarlo de categorias 
+    $options = array(
+        array(
+            'value' => '1',
+            'string' => 'Book'
         ),
-        array('name' => 'product2',
-            'description' => 'Description de product2',
-            'price' => '002',
-            'img' => 'not-found.png',
-            'id' => '02'
-        ),
-        array('name' => 'product3',
-            'description' => 'Description de product2',
-            'price' => '003',
-            'img' => 'not-found.png',
-            'id' => '03'
+        array(
+            'value' => '2',
+            'string' => 'Music'
         )
     );
+
+
 
     require_once '../../View/Front/products.php';
 }
 
 function product($idProduct = '') {
-
+    require_once '../../Model/ProductClass.php';
     global $navegador;
+    global $connection;
 
 
-//    $elementos = array(
-//        array('title' => 'Iconos / Logos', 'url' => '#', 
-//            'description' => 'Locotipo al menos por 50€ '
-//            . '<br/> <a href="https://es.fiverr.com/juanpost/disenar-y-crear-logotipos-e-iconos-para-tu-empresa?context=advanced_search&context_type=rating&context_referrer=search_gigs&pos=1&funnel=78f4a10b-8ed7-4e0d-84a1-0da312864a33"> fiverr</a>'
-//            . '<br/> <a href="https://es.fiverr.com/moscovic/hacer-un-logo-sencillo-e-increible-para-ti?context=advanced_search&context_type=rating&context_referrer=search_gigs&pos=15&funnel=78f4a10b-8ed7-4e0d-84a1-0da312864a33"> fiverr</a>'
-//            . '<br/> Iconos al menos por 10€'
-//            . '<br/> <a href="https://es.fiverr.com/athecrea/hacer-5-iconos-flat-de-la-tematica-que-tu-quieras?context=advanced_search&context_type=rating&context_referrer=search_gigs&source=top-bar&pos=1&funnel=3c682b56-950d-40f8-b7dc-cc66a03ee80a"> fiverr</a>'
-//            . '<br/> <a href="https://es.fiverr.com/marcosramirezx/disenar-2-flat-iconos?context=advanced_search&context_type=rating&context_referrer=search_gigs&source=top-bar&pos=2&funnel=ce5f9a62-7af2-4acc-9801-7242c4a75a44"> fiverr</a>'
-//            . '<br/>'
-//            ,
-//            'image' => '#'),
-//        array('title' => 'Aplicaciones para movil', 'url' => '#', 
-//            'description' => 'Si es verdad lo que ofrece por 100€ y gano mucho mucho'
-//            . '<br/> <a href="https://es.fiverr.com/itocto/crear-o-modificar-tus-aplicaciones-en-android?context=advanced_search&context_type=rating&context_referrer=search_gigs&source=top-bar&pos=9&funnel=f174185c-5c6b-46df-a28c-47156c177cc5"> fiverr</a>'
-//            . '<br/> <a href="https://es.fiverr.com/nicolasavalo/crear-una-aplicacion-para-android-muy-completa?context=advanced_search&context_type=rating&context_referrer=search_gigs&source=top-bar&pos=1&funnel=e465696e-1558-4689-afa3-852134ff8692"> fiverr</a>'
-//            . '<br/>'
-//            , 'image' => '#'),
-//        array('title' => 'Paginas web', 'url' => '#',
-//            'description' => 'tiene muy buena recomendaciones pero habira que mirar el precio'
-//            . '<br/> <a href="https://es.fiverr.com/philsony/crear-un-sitio-web-completo?context=advanced_search&context_type=rating&context_referrer=search_gigs&pos=2&funnel=ad008a96-0547-4f5b-97d1-f5d7dcee9c18"> fiverr</a>'
-//            . '<br/>'
-//            . '<br/>'
-//            , 'image' => '#'),
-//        array('title' => 'Seo', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Redaccion de articulos', 'url' => '#', 
-//            'description' => 'redaccion de articulos'
-//            . '<br/> <a href="https://es.fiverr.com/trotaires/escribir-un-articulo-de-calidad-para-tu-blog-o-pagina-web?context=advanced_search&context_type=rating&context_referrer=search_gigs&source=top-bar&pos=5&funnel=f9b49a8b-7154-4227-93af-0d8424d0d4c5"> fiverr</a>' 
-//            . '<br/>', 
-//            'image' => '#'),
-//        array('title' => 'Tienda online', 'url' => '#', 
-//            'description' => 'redaccion de articulos'
-//            . '<br/> <a href="https://es.fiverr.com/davidtheset/hacer-tu-ecommerce?context=advanced_search&context_type=rating&context_referrer=search_gigs&source=top-bar&pos=9&funnel=1cb7fbb3-be90-469d-a717-af4886ed9e08"> fiverr</a>' 
-//            . '<br/>', 
-//            'image' => '#')
-//    );
-//    require_once '../../View/productos.php';
-// cargamos segun id
-    $product  = array('name' => 'product1',
+    $product = new ProductClass($connection);
+
+    $product->fetch($idProduct);
+
+    $titulo = $product->name;
+    $description = $product->description;
+    $palabrasClaves = 'palabrasClaves';
+
+
+    if ($product->imgs == '') {
+        $product->imgs = array('not-found.png');
+    }
+    $product = array('name' => $product->name,
         'id' => '01',
-        'description' => 'description product lang 1',
-        'characteristic' => 'characteristic product 1',
-        'price' => '001',
-        'imgs' => array(
-            'not-found.png',
-            'not-found.png',
-            'not-found.png')
+        'description' => $product->longDescription,
+        'price' => $product->price,
+        'imgs' => $product->imgs
     );
 
-    $titulo = $product['name'];
-    $description = $product['description'];
-    $palabrasClaves = 'palabrasClaves';
+    setcookie('cart' , '');
+    var_dump($_COOKIE);
+
+
 
 
     require_once '../../View/Front/product.php';
 }
-
 
 function cart() {
     global $navegador;

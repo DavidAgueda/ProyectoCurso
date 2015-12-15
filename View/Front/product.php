@@ -33,7 +33,7 @@
         <![endif]-->
         <div class="jumbotron">
             <h1><?php echo $titulo; ?></h1>
-            <p><?php echo $description; ?></p>
+            <p><?php echo $description; ?> ...</p>
         </div>
         <nav class="navbar navbar-inverse">
             <div class="container">
@@ -83,11 +83,11 @@
                     for ($i = 0; $i < count($product['imgs']); $i++) {
                         if ($i == 0) {
                             echo '<div class = "item active">
-                                            <img src="../../img/'.$product['imgs'][$i].'" alt="" style="width:400px;height:400px;">
+                                            <img src="../../img/'.$product['imgs'][$i]['name'].'" alt="'.$product['imgs'][$i]['alt'].'" style="width:400px;height:400px;">
                                         </div>';
                         } else {
                             echo '<div class = "item ">
-                                            <img src="../../img/'.$product['imgs'][$i].'" alt="" style="width:400px;height:400px;">   
+                                            <img src="../../img/'.$product['imgs'][$i]['name'].'" alt="'.$product['imgs'][$i]['alt'].'" style="width:400px;height:400px;">   
                                         </div>';
                         }
                     }
@@ -122,20 +122,16 @@
             <!-- Example row of columns -->
             <div class="row">
                 <div class="col-md-12">
-                    <h2><?php echo  $product['description']?></h2>
+<!--                    <h2><?php echo  $product['name']?></h2>-->
                 <p>
                    
                    <?php echo  $product['description']?>
                 </p>
                 <p>
                    
-                   <?php echo  $product['characteristic']?>
-                </p>
-                <p>
-                   
                    <?php echo  $product['price']?>
                 </p>
-                <a class="btn btn-default" href="" role="button">anadir a carrito</a>
+                <a class="btn btn-default" href="" role="button">Add Cart</a>
                 </div>
 
             </div>

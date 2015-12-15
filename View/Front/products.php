@@ -21,6 +21,17 @@
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
+            .price {
+                font-size: 1.3em;
+                color: red;
+                font-weight: bold;
+            }
+            .description {
+                text-align: justify;
+            }
+            nav label{
+                color: white;
+            }
         </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
@@ -58,6 +69,41 @@
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
+            <div class="container">
+
+                <form class="form-horizontal" method="GET" action="./controller.php?f=products">
+                    <fieldset>
+
+
+                        <!--                         Select Basic -->
+                        <div class="form-group">
+                            <input hidden id="f" name="f"  value="products" type="text">
+                            <label class="col-md-4 control-label" for="type">Category</label>
+                            <div class="col-md-4">
+                                <select id="o" name="o" class="form-control">
+                                    <?php
+                                    echo '<option value="">ALL</option>';
+                                    for ($i = 0; $i < count($options); $i++) {
+                                        echo '<option value="' . $options[$i]['value'] . '">' . $options[$i]['string'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="type">Send</label>
+                            <div class="col-md-4">
+                                <input id="s" name="s"  value="" type="text">        
+                            </div>
+                            <!-- Button -->
+
+                            <button  class="btn btn-primary">Send</button>
+                        </div>
+
+
+                    </fieldset>
+                </form>
+            </div>
         </nav>
 <!--        <p>visitar esto para .htaccess https://www.addedbytes.com/articles/for-beginners/url-rewriting-for-beginners/</p>
         <p>Lista de cosas ha hacer</p>
@@ -78,18 +124,17 @@
             <div class="row">
 
                 <?php
-
                 for ($i = 0; $i < count($listProducts); $i++) {
-                    
+
 //                    var_dump($listProducts[$i]);
                     echo '  <div class="col-md-4">
-                                    <img src="../../img/'.$listProducts[$i]['img'].'" alt="" style="width:200px;height:200px;">
+                                    <img src="../../img/' . $listProducts[$i]['img'] . '" alt="" style="width:200px;height:200px;">
                                     <h2>' . $listProducts[$i]['name'] . '</h2>
                                         <hr/>
-                                    <p> '.$listProducts[$i]['description'].'</p>
-                                    <p> '.$listProducts[$i]['price'].'</p>
-                                    <p><a class="btn btn-success" href="controller.php?f=product" role="button">Mas detalles &raquo;</a></p>
-                                   <!-- <p><a class="btn btn-success" href="controller.php?f=product'.$listProducts[$i]['id'].'" role="button">Mas detalles &raquo;</a></p> -->
+                                    <p class="description"> ' . $listProducts[$i]['description'] . '</p>
+                                    <p class="price"> ' . $listProducts[$i]['price'] . ' €</p>
+                                    <p><a class="btn btn-success" href="controller.php?f=product&o=' . $listProducts[$i]['id'] . '" role="button">Mas detalles &raquo;</a></p>
+                                   <!-- <p><a class="btn btn-success" href="controller.php?f=product' . $listProducts[$i]['id'] . '" role="button">Mas detalles &raquo;</a></p> -->
                                 </div>';
                     if ((($i + 1) % 3) == 0) {
                         echo'<div class="row"></div>';
