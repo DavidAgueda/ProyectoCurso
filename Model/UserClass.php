@@ -1,6 +1,6 @@
 <?php
 
-use AddressClass;
+//use AddressClass;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -25,8 +25,8 @@ class UserClass {
     var $address;
     var $db;
 
-    public function __construct(PDO $db, $user, $email, $pass, $name, $lastName, $date, $sexe, $address) {
-        $this->db = $db;
+    public function __construct($connection, $user ='', $pass='', $email='', $name='', $lastName='', $date='', $sexe='', $address='') {
+        $this->db = $connection->db;
 
 //        $this->id       =;
         $this->user     = $user;

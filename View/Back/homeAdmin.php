@@ -5,6 +5,12 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 
     <?php
+        $viewLogin = false;
+    if (isset($_SESSION['viewLogin'])) {
+        $viewLogin = $_SESSION['viewLogin'];
+        //        
+    }
+    
     ?>
     <head>
         <meta charset="utf-8">
@@ -66,6 +72,15 @@
                         }
                         ?>
                         <li><a href="controller.php?f=contact">Contact</a></li>
+                        <?php
+                        if ($viewLogin) {
+                            ?> 
+                            <form method="post">
+                                <input class="navbar-brand" type="submit" name="close" value="Close Session">
+                            </form>
+                            <?php
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -84,7 +99,7 @@
                     <h2>Orders Status</h2>
                     <canvas id="myPieChart1" class="classPie"></canvas>
                 </div>
-                
+
                 <div class="col-md-6">
                     <h2>Orders Status</h2>
                     <canvas id="myPieChart2" class="classPie"></canvas>

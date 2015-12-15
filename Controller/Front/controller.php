@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,7 +13,7 @@ $connection = new Connexion('Ecommerce', 'localhost', 'root', '');
 $navegador = array(
     array('string' => 'Products ', 'url' => 'controller.php?f=products'),
     array('string' => 'Cart', 'url' => 'controller.php?f=cart'),
-    array('string' => 'Login ', 'url' => '')
+    array('string' => 'Login ', 'url' => 'controller.php?f=login')
 );
 
 function index() {
@@ -181,7 +181,7 @@ function cart() {
     $titulo = 'Cart';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    
+
     if ($_COOKIE['Products'] != '[]') {
         $productsCart = $_COOKIE['Products'];
 
@@ -216,6 +216,48 @@ function cart() {
 
     require_once '../../View/Front/cart.php';
 }
+
+
+function login() {
+    require_once '../../Model/UserClass.php';
+        $titulo = 'Login';
+        $description = 'Login';
+        $palabrasClaves = 'Login';
+        
+
+    
+    global $connection;
+    $viewLogin = false;
+    if (isset($_SESSION['viewLogin'])) {
+        $viewLogin = $_SESSION['viewLogin'];
+        //        
+    }
+    if (isset($_POST['user']) && isset($_POST['pass'])) {
+
+//        $user = new UserClass($connection, $user, $email, $pass, $name, $lastName, $date, $sexe, $address);
+        $user = new UserClass($connection, $_POST['user'], $_POST['pass']);
+        $viewLogin = $_SESSION['viewLogin'] = $user->login();
+        
+        var_dump($viewLogin);
+        var_dump($user);
+
+        $_POST['user'] = null;
+        $_POST['pass'] = null;
+
+    }
+    
+    if( $viewLogin ){
+        echo '<h1>redirecciono</h1>';
+        header('Location: ../Back/controller.php?f=index');
+    }
+    if (isset($_POST['close'])) {
+            $_SESSION['viewLogin']= null;
+    }
+    
+    
+      require_once '../../View/Front/login.php';
+}
+
 
 function okMail() {
     global $navegador;
