@@ -175,7 +175,7 @@ function client() {
     require_once '../../View/Back/client.php';
 }
 
-function productList() {
+function productList($category = '') {
     require_once '../../Model/ProductClass.php';
     global $viewLogin;
     if (!$viewLogin) {
@@ -190,18 +190,16 @@ function productList() {
     $palabrasClaves = 'palabrasClaves';
 
 
+    $send = '';
+    if (isset($_GET['s'])) {
+        $send = $_GET['s'];
+    }
 
-
-//    $send = '';
-//    if (isset($_GET['s'])) {
-//        $send = $_GET['s'];
-//    }
-//
-//    if ($category == '') {
+    if ($category == '') {
     $sql = 'SELECT * FROM `product` WHERE name LIKE \'%' . $send . '%\''; //    }elseif($_GET['s'] == ''){
-//    } else {
-//        $sql = 'SELECT * FROM `product` WHERE `idCategory` = \'' . $category . '\' AND name LIKE \'%' . $send . '%\'';
-//    }
+    } else {
+        $sql = 'SELECT * FROM `product` WHERE `idCategory` = \'' . $category . '\' AND name LIKE \'%' . $send . '%\'';
+    }
 
     $requete = $connection->commitSelect($sql);
 
@@ -268,6 +266,8 @@ function product($idProduct = "") {
             $product->longDescription = $_POST['longDescription'];
             $product->price = $_POST['price'];
             $product->category = $_POST['category'];
+            
+            $product->insertProduct();
         }
         if (isset($_POST['button']) && $_POST['button'] == 'Delete') {
             $product->deleteProduct();
@@ -303,7 +303,7 @@ function product($idProduct = "") {
     $description = $product->description;
     $palabrasClaves = 'palabrasClaves';
 
-    require_once '../../View/Back/Product.php';
+    require_once '../../View/Back/product.php';
 }
 
 function orders() {

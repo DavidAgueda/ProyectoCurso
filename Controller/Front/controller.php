@@ -184,34 +184,34 @@ function cart() {
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
 
-    if ($_COOKIE['Products'] != '[]') {
+
+    if ($_COOKIE['Products'] != '[]' || $_COOKIE['Products'] != NULL) {
         $productsCart = $_COOKIE['Products'];
 
 
         $productsCart = str_replace("[", "", $productsCart);
         $productsCart = str_replace("]", "", $productsCart);
 
-        $productsCart = explode(",", $productsCart);
+        if ($productsCart != '') {
+            $productsCart = explode(",", $productsCart);
+            foreach ($productsCart as $key => $value) {
+                $product = new ProductClass($connection);
+                $product->fetch($value);
 
-//        var_dump($productsCart);
+                if (!isset($product->imgs[0]['name'])) {
+                    $img = 'not-found.png';
+                } else {
+                    $img = $product->imgs[0]['name'];
+                }
 
-        foreach ($productsCart as $key => $value) {
-            $product = new ProductClass($connection);
-            $product->fetch($value);
-
-            if (!isset($product->imgs[0]['name'])) {
-                $img = 'not-found.png';
-            } else {
-                $img = $product->imgs[0]['name'];
+                $listProductsCart[] = array(
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'price' => $product->price,
+                    'img' => $img,
+                    'id' => $product->id
+                );
             }
-
-            $listProductsCart[] = array(
-                'name' => $product->name,
-                'description' => $product->description,
-                'price' => $product->price,
-                'img' => $img,
-                'id' => $product->id
-            );
         }
     }
 

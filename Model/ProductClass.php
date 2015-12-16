@@ -88,7 +88,7 @@ class ProductClass {
     }
     
     public function deleteProduct(){
-        require_once __DIR__.'../ImageClass.php';
+        require_once 'ImageClass.php';
 //        var_dump($this->imgs);
         
         foreach ($this->imgs as $key => $value) {

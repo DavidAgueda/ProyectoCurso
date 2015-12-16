@@ -96,7 +96,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="type">Send</label>
+                            <label class="col-md-4 control-label" for="type">Name</label>
                             <div class="col-md-4">
                                 <input id="s" name="s"  value="" type="text">        
                             </div>
