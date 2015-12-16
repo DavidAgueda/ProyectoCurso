@@ -49,9 +49,9 @@ class ProductClass {
 //         var_dump($imgs);
         
         $this->id               = $product[0]['idRow'];
-        $this->name             = $product[0]['name'];
-        $this->description      = $product[0]['description'];
-        $this->longDescription  = $product[0]['longDescription'];
+        $this->name             = utf8_encode($product[0]['name']);
+        $this->description      = utf8_encode($product[0]['description']);
+        $this->longDescription  = utf8_encode($product[0]['longDescription']);
         $this->price            = $product[0]['price'];
         $this->imgs             = $imgs;
         $this->category         = $product[0]['idCategory'];

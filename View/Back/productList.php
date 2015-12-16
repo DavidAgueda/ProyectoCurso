@@ -21,6 +21,10 @@
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
+            
+            nav label{
+                color: white;
+            }
         </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
@@ -58,6 +62,41 @@
                     </ul>
                 </div>
             </div>
+                        <div class="container">
+
+                <form class="form-horizontal" method="GET" action="./controller.php?f=products">
+                    <fieldset>
+
+
+                        <!--                         Select Basic -->
+                        <div class="form-group">
+                            <input hidden id="f" name="f"  value="productList" type="text">
+                            <label class="col-md-4 control-label" for="type">Category</label>
+                            <div class="col-md-4">
+                                <select id="o" name="o" class="form-control">
+                                    <?php
+                                    echo '<option value="">ALL</option>';
+                                    for ($i = 0; $i < count($options); $i++) {
+                                        echo '<option value="' . $options[$i]['value'] . '">' . $options[$i]['string'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="type">Send</label>
+                            <div class="col-md-4">
+                                <input id="s" name="s"  value="" type="text">        
+                            </div>
+                            <!-- Button -->
+
+                            <button  class="btn btn-primary">Send</button>
+                        </div>
+
+
+                    </fieldset>
+                </form>
+            </div>
         </nav>
 
         <div class="container">
@@ -78,7 +117,7 @@
                         <?php for ($i = 0; $i < count($listProducts); $i++) { ?>
                             <tr>
                                 <td>
-                                    <b>ID : </b> <?php echo $listProducts[$i]['id'] ?>
+                                    <p><b>ID : </b> <?php echo $listProducts[$i]['id'] ?></p>
                                 </td>
                                 <td>
                                     <ul>
@@ -88,19 +127,19 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    <img src="../../img/<?php echo $listProducts[$i]['img'] ?>" alt="" style="width:200px;height:200px;">
+                                    <img class="thumbnail" src="../../img/<?php echo $listProducts[$i]['img'] ?>" alt="" style="width:200px;height:200px;">
 
 
 
                                 </td>
                                 <td>
-                                    <b>Price : </b><?php echo $listProducts[$i]['price'] ?>
+                                    <p><b>Price : </b><?php echo $listProducts[$i]['price'] ?></p>
 
 
 
                                 </td>
     <!--                                <td><?php echo $listProductsCart[$i]['price'] ?></td>-->
-                                <td> <a class ="btn-danger" href="controller.php?f=product">Change </a></td>
+                                <td> <a  class ="btn btn-danger glyphicon glyphicon-pencil" href="controller.php?f=product" roll="button">Change </a></td>
                             </tr>
                         <?php } ?>
 

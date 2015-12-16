@@ -64,28 +64,111 @@
             <!-- Example row of columns -->
 
             <?php
-            var_dump($product);
+
             ?>
             <div class="row">
+                <p id="mensaje"></p>
                 anadir foto decidir si la foto es la principal, modificar, desacticar
 
             </div>
             <div class="row">
-                name: <?php echo $product['name']?>
-                name: <?php echo $product['description']?>
-                name: <?php echo $product['longDescription']?>
-                name: <?php echo $product['characteristics']?>
-                name: <?php echo $product['price']?>
+                <form class="form-horizontal" method="post" action="../test/test.php">
+                    <fieldset>
+
+                        <!-- Form Name -->
+                        <legend> Id : <?php echo $product->id ?> </legend>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="name">Product name</label>  
+                            <div class="col-md-4">
+                                <input id="name" name="name" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo utf8_decode($product->name) ?>">
+
+                            </div>
+                        </div>
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="description">Description</label>
+                            <div class="col-md-4">                     
+                                <textarea class="form-control" id="description" name="description"><?php echo utf8_decode($product->description) ?></textarea>
+                            </div>
+                        </div>
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="longDescription">Long Description</label>
+                            <div class="col-md-4">                     
+                                <textarea class="form-control" id="longDescription" name="longDescription"><?php echo utf8_decode($product->longDescription) ?></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="price">Price</label>
+                            <div class="col-md-4">                     
+                                <input id="price" name="price" class="form-control input-md" required="" type="number" value="<?php echo utf8_decode($product->price) ?>">
+                            </div>
+                        </div>
+
+                        <!-- Button -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="send"></label>
+                            <div class="col-md-4">
+                                <button id="send" name="send" class="btn btn-primary">Send</button>
+                                <button  type="button" class="btn">Update</button>
+                                <button  type="button" class="btn">Deactivate</button>
+                                <button  type="button" class="btn">Save</button>
+
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
             </div>
             <div class="row">
+                <h2>Images</h2>
+                <form accept-charset="utf-8" method="POST" id="enviarimagenes" enctype="multipart/form-data" >
+                    <input hidden type="text" name="idProduct" value="<?php echo $product->id?>" />
+                    <label>Alt</label><br>
+                    <input type="text" name="alt" />
+                    <br><br>
+                    <input type="file" name="img"/>
+                    <br><br>
+                    <button class="btn btn-default" type="submit">Send</button>
+                </form>
+                
+                
+
+            </div>
+            <hr>
+            <div class="row">
+
+
+                <?php
+                foreach ($product->imgs as $key => $value) {
+                    ?>
+                    <div class="col-md-4 col-xs-4">
+                        <img  class="thumbnail" src="../../img/<?php echo $value['name']; ?>" alt="" style="width:200px;height:200px;">
+                        <label class="col-md-4 control-label" for="alt">Alt</label>               
+                        <input id="alt" name="alt" class="form-control input-md" required="" type="text" value="<?php echo $value['alt']; ?>">
+                        <hr/>
+
+
+                        <button onclick="delete(<?php echo $value['idRow']?>)" type="button" class="btn btn-danger">Delete</button> 
+                        <button type="button" class="btn btn-success" >Save</button> 
+
+
+                    </div>
+
+                    <?php
+                    if ((($i + 1) % 3) == 0) {
+                        echo'<div class="row"></div>';
+                    }
+                }
+                ?>
 
             </div>
 
             <hr>
 
-            <button>Update</button>
-            <button>Deactivate</button>
-            <button>Save</button>
+
 
 
             <footer>
@@ -109,7 +192,36 @@
                 $(button).next().toggle();
             }
         </script>
+        <script>
+            $("#enviarimagenes").on("submit", function (e) {
+                e.preventDefault();
+                var formData = new FormData(document.getElementById("enviarimagenes"));
 
+                $.ajax({
+                    url: "./controller.php?f=updateImag",
+                    type: "POST",
+                    dataType: "HTML",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function (echo) {
+                    $("#mensaje").html(echo);
+
+                    console.log(echo)
+                }).fail(function () {
+                    alert("Error uploading the picture.");
+                });
+            });
+            
+            $(document).ready(function(){
+                            function delete(id){
+                console.log(id)
+            }
+            })
+
+            
+        </script>
 
     </body>
 </html>

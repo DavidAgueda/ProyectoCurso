@@ -198,7 +198,7 @@ function productList() {
 //    }
 //
 //    if ($category == '') {
-        $sql = 'SELECT * FROM `product` WHERE name LIKE \'%' . $send . '%\''; //    }elseif($_GET['s'] == ''){
+    $sql = 'SELECT * FROM `product` WHERE name LIKE \'%' . $send . '%\''; //    }elseif($_GET['s'] == ''){
 //    } else {
 //        $sql = 'SELECT * FROM `product` WHERE `idCategory` = \'' . $category . '\' AND name LIKE \'%' . $send . '%\'';
 //    }
@@ -227,7 +227,6 @@ function productList() {
             'category' => $product->category,
             'img' => $img,
             'id' => $product->id
-                
         );
     }
 // cargarlo de categorias 
@@ -246,38 +245,29 @@ function productList() {
     require_once '../../View/Back/productList.php';
 }
 
-function product() {
+function product($idProduct = "") {
+    require_once '../../Model/ProductClass.php';
     global $viewLogin;
     if (!$viewLogin) {
         header('Location: ../Front/controller.php?f=index');
     }
     global $navegador;
     global $navegadorAdmin;
+    global $connection;
 
-    $titulo = 'Titulo';
-    $description = 'description';
+    $product = new ProductClass($connection);
+
+    $product->fetch($idProduct);
+
+    $titulo = $product->name;
+    $description = $product->description;
     $palabrasClaves = 'palabrasClaves';
-// Obtener type user
-    $userType = 'admin';
-//    $userType = 'user';
 
-    if ($userType == 'user') {
-        
-    } elseif ($userType == 'admin') {
-        $navegador = $navegadorAdmin;
+
+    if ($product->imgs == '') {
+        $product->imgs = array('not-found.png');
     }
-
-    $product = array('name' => 'product3',
-        'description' => 'Description de product3',
-        'longDescription' => 'LONG Description de product3',
-        'characteristics' => 'characteristics',
-        'price' => '003',
-        'imgs' => array(
-            'not-found.png',
-            'not-found.png',
-            'not-found.png'),
-        'id' => '03'
-    );
+    var_dump($product);
 
     require_once '../../View/Back/Product.php';
 }
@@ -406,19 +396,63 @@ function redire() {
 
 require_once '../main.php';
 
+function recortar_texto($texto, $limite = 100) {
+    $texto = trim($texto);
+    $texto = strip_tags($texto);
+    $tamano = strlen($texto);
+    $resultado = '';
+    if ($tamano <= $limite) {
+        return $texto;
+    } else {
+        $texto = substr($texto, 0, $limite);
+        $palabras = explode(' ', $texto);
+        $resultado = implode(' ', $palabras);
+        $resultado .= '...';
+    }
+    return $resultado;
+}
 
-function recortar_texto($texto, $limite=100){	
-	$texto = trim($texto);
-	$texto = strip_tags($texto);
-	$tamano = strlen($texto);
-	$resultado = '';
-	if($tamano <= $limite){
-		return $texto;
-	}else{
-		$texto = substr($texto, 0, $limite);
-		$palabras = explode(' ', $texto);
-		$resultado = implode(' ', $palabras);
-		$resultado .= '...';
-	}	
-	return $resultado;
+function updateImag() {
+    require_once '../../Model/ImageClass.php';
+    global $connection;
+
+
+    if (isset($_POST['idProduct']) || isset($_POST['alt']) || isset($_POST['img'])) {
+        //file name
+        $fileName = $_FILES['img']['name'];
+
+        $extensiones = array('jpg', 'jpeg', 'gif', 'png', 'bmp');
+
+        //Obtenemos la extensión (en minúsculas) para poder comparar
+        $value = explode('.', $fileName);
+        $extension = strtolower(end($value));
+
+        //Verificamos que sea una extensión permitida, si no lo es mostramos un mensaje de error
+        if (!in_array($extension, $extensiones)) {
+            die('Error : Only the following extensions are allowed ' . implode(', ', $extensiones));
+        };
+
+
+        $img = new ImageClass($connection, $fileName, $_POST['alt'], $_POST['idProduct']);
+
+        $img->setInDB();
+
+        move_uploaded_file($_FILES ['img']['tmp_name'], '../../img/' . $_FILES ['img']['name']);
+    }
+
+    function deleteImag() {
+        require_once '../../Model/ImageClass.php';
+        global $connection;
+
+
+        if (isset($_POST['idImg'])) {
+            //file name
+
+            $img = new ImageClass($connection);
+            $img->fetch($_POST['idImg']);
+            $img->delete();
+        }
+    }
+
+//    $img = new ImageClass($connection, $name, $alt, $idProduct);
 }
