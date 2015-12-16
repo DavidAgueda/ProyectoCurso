@@ -65,6 +65,25 @@ class ImageClass {
             echo 'Error : ' . $exc->getMessage();
         }
     }
+    
+    public function updateImag() {
+        $conn = $this->db;
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        $sql = "UPDATE images SET "
+                . "idProduct= '$this->idProduct',"
+                . "name= '$this->name' ,"
+                . "alt= '$this->alt' "
+                . "WHERE  idRow ='$this->id'";
+        
+        try {
+            $requete = $conn->prepare($sql);
+            $rel = $requete->execute();
+        } catch (Exception $exc) {
+            
+            echo 'Error : ' . $exc->getMessage();
+        }
+    }
 
     public function fetch($id = '') {
         // buscar por id 

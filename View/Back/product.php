@@ -64,7 +64,6 @@
             <!-- Example row of columns -->
 
             <?php
-
             ?>
             <div class="row">
                 <p id="mensaje"></p>
@@ -72,7 +71,7 @@
 
             </div>
             <div class="row">
-                <form class="form-horizontal" method="post" action="../test/test.php">
+                <form class="form-horizontal" method="post" action="">
                     <fieldset>
 
                         <!-- Form Name -->
@@ -82,7 +81,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="name">Product name</label>  
                             <div class="col-md-4">
-                                <input id="name" name="name" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo utf8_decode($product->name) ?>">
+                                <input id="name" name="name" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $product->name ?>">
 
                             </div>
                         </div>
@@ -90,31 +89,43 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="description">Description</label>
                             <div class="col-md-4">                     
-                                <textarea class="form-control" id="description" name="description"><?php echo utf8_decode($product->description) ?></textarea>
+                                <textarea class="form-control" id="description" name="description"><?php echo $product->description ?></textarea>
                             </div>
                         </div>
                         <!-- Textarea -->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="longDescription">Long Description</label>
                             <div class="col-md-4">                     
-                                <textarea class="form-control" id="longDescription" name="longDescription"><?php echo utf8_decode($product->longDescription) ?></textarea>
+                                <textarea class="form-control" id="longDescription" name="longDescription"><?php echo $product->longDescription ?></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="price">Price</label>
                             <div class="col-md-4">                     
-                                <input id="price" name="price" class="form-control input-md" required="" type="number" value="<?php echo utf8_decode($product->price) ?>">
+                                <input id="price" name="price" class="form-control input-md" required="" type="number" value="<?php echo $product->price ?>">
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="category">Category</label>
+                            <div class="col-md-4">
+                                <select id="category" name="category" class="form-control">
+                                    <?php
+                                    for ($i = 0; $i < count($options); $i++) {
+                                        if ($options[$i]['value'] == $product->category) {
+                                            echo '<option value="' . $options[$i]['value'] . '" selected>' . $options[$i]['string'] . '</option>';
+                                        } else {
+                                            echo '<option value="' . $options[$i]['value'] . '">' . $options[$i]['string'] . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
                         <!-- Button -->
                         <div class="form-group">
-                            <label class="col-md-4 control-label" for="send"></label>
                             <div class="col-md-4">
-                                <button id="send" name="send" class="btn btn-primary">Send</button>
-                                <button  type="button" class="btn">Update</button>
-                                <button  type="button" class="btn">Deactivate</button>
-                                <button  type="button" class="btn">Save</button>
+                                <input type="submit"  id="delete" name="button" type="button" class="btn btn-danger" value ="Delete">
+                                <input type="submit"  id="save" name="button" type="button" class="btn btn-success" value ="Save">
 
                             </div>
                         </div>
@@ -122,47 +133,60 @@
                     </fieldset>
                 </form>
             </div>
-            <div class="row">
-                <h2>Images</h2>
-                <form accept-charset="utf-8" method="POST" id="enviarimagenes" enctype="multipart/form-data" >
-                    <input hidden type="text" name="idProduct" value="<?php echo $product->id?>" />
-                    <label>Alt</label><br>
-                    <input type="text" name="alt" />
-                    <br><br>
-                    <input type="file" name="img"/>
-                    <br><br>
-                    <button class="btn btn-default" type="submit">Send</button>
-                </form>
-                
-                
+<?php if ($product->id != '') { ?>
+                <div class="row">
+                    <h2>Images</h2>
+                    <form class="form-horizontal" accept-charset="utf-8" method="POST" id="enviarimagenes" enctype="multipart/form-data" >
 
-            </div>
+                        <input hidden type="text" name="idProduct" value="<?php echo $product->id ?>" />
+                        <div class="form-group">
+
+                            <label class="col-md-4 control-label"  for="alt">Alt</label>
+                            <div class="col-md-4">
+                                <input class="form-control input-md" type="text" name="alt" id="alt"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label"  for="image">Image</label>
+                            <div class="col-md-4">
+                                <input class="form-control input-md" type="file" name="img" id="image"/>
+                            </div>
+
+                            <button  class="btn btn-default" type="submit">Send</button>
+
+                        </div>
+
+                    </form>
+                </div>
+    <?php
+}
+?>
+
             <hr>
             <div class="row">
 
+<?php
+if ($product->imgs != '') {
+    foreach ($product->imgs as $key => $value) {
+        ?>
+                        <div class="col-md-4 col-xs-4">
+                            <img  class="thumbnail" src="../../img/<?php echo $value['name']; ?>" alt="" style="width:200px;height:200px;">
+                            <label class="col-md-4 control-label" for="alt<?php echo $value['idRow'] ?>">Alt</label>               
+                            <input id="alt<?php echo $value['idRow'] ?>" name="alt<?php echo $value['idRow'] ?>" class="form-control input-md" required="" type="text" value="<?php echo $value['alt']; ?>">
+                            <hr/>
 
-                <?php
-                foreach ($product->imgs as $key => $value) {
-                    ?>
-                    <div class="col-md-4 col-xs-4">
-                        <img  class="thumbnail" src="../../img/<?php echo $value['name']; ?>" alt="" style="width:200px;height:200px;">
-                        <label class="col-md-4 control-label" for="alt">Alt</label>               
-                        <input id="alt" name="alt" class="form-control input-md" required="" type="text" value="<?php echo $value['alt']; ?>">
-                        <hr/>
+                            <button onclick="deleteImg(<?php echo $value['idRow'] ?>)" type="button" class="btn btn-danger">Delete</button> 
+                            <button onclick="updateImg(<?php echo $value['idRow'] ?>)" type="button" class="btn btn-success" >Save</button> 
 
+                        </div>
 
-                        <button onclick="delete(<?php echo $value['idRow']?>)" type="button" class="btn btn-danger">Delete</button> 
-                        <button type="button" class="btn btn-success" >Save</button> 
-
-
-                    </div>
-
-                    <?php
-                    if ((($i + 1) % 3) == 0) {
-                        echo'<div class="row"></div>';
-                    }
-                }
-                ?>
+        <?php
+        if ((($i + 1) % 3) == 0) {
+            echo'<div class="row"></div>';
+        }
+    }
+}
+?>
 
             </div>
 
@@ -183,14 +207,14 @@
         <script src="../../js/main.js"></script>
 
         <script>
-            $(document).ready(function () {
-                $('.address').hide();
-            })
-            function hiddenAddress(button) {
+                        $(document).ready(function () {
+                            $('.address').hide();
+                        })
+                        function hiddenAddress(button) {
 //                console.log(button);
-                console.log();
-                $(button).next().toggle();
-            }
+                            console.log();
+                            $(button).next().toggle();
+                        }
         </script>
         <script>
             $("#enviarimagenes").on("submit", function (e) {
@@ -198,7 +222,7 @@
                 var formData = new FormData(document.getElementById("enviarimagenes"));
 
                 $.ajax({
-                    url: "./controller.php?f=updateImag",
+                    url: "./controller.php?f=addImag",
                     type: "POST",
                     dataType: "HTML",
                     data: formData,
@@ -208,19 +232,55 @@
                 }).done(function (echo) {
                     $("#mensaje").html(echo);
 
-                    console.log(echo)
+                    if (echo == '') {
+                        location.reload();
+                    }
                 }).fail(function () {
                     alert("Error uploading the picture.");
                 });
             });
-            
-            $(document).ready(function(){
-                            function delete(id){
-                console.log(id)
-            }
-            })
 
-            
+
+            function deleteImg(id) {
+                var parametros = {
+                    "id": id
+                };
+                $.ajax({
+                    data: parametros,
+                    url: './controller.php?f=deleteImag',
+                    type: 'post'
+                }).done(function (echo) {
+                    $("#mensaje").html(echo);
+
+                    if (echo == '') {
+                        location.reload();
+                    }
+
+                });
+            }
+            function updateImg(id) {
+                var parametros = {
+                    "id": id,
+                    "alt": $('#alt' + id).val()
+                };
+
+                console.log(parametros);
+                $.ajax({
+                    data: parametros,
+                    url: './controller.php?f=updateImag',
+                    type: 'post'
+                }).done(function (echo) {
+                    $("#mensaje").html(echo);
+
+                    if (echo == '') {
+                        location.reload();
+                    }
+
+                });
+            }
+
+
+
         </script>
 
     </body>

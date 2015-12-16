@@ -205,10 +205,6 @@ function productList() {
 
     $requete = $connection->commitSelect($sql);
 
-// Cargamos segun la categoria
-
-
-
     foreach ($requete as $key => $value) {
         $product = new ProductClass($connection);
         $product->fetch($value['idRow']);
@@ -253,21 +249,59 @@ function product($idProduct = "") {
     }
     global $navegador;
     global $navegadorAdmin;
+    $navegador = $navegadorAdmin;
     global $connection;
 
     $product = new ProductClass($connection);
+//    var_dump($_POST);
 
-    $product->fetch($idProduct);
+    if ($idProduct != '') {
+
+        $product->fetch($idProduct);
+        if ($product->imgs == '') {
+            $product->imgs = array('not-found.png');
+        }
+
+        if (isset($_POST['button']) && $_POST['button'] == 'Save') {
+            $product->name = $_POST['name'];
+            $product->description = $_POST['description'];
+            $product->longDescription = $_POST['longDescription'];
+            $product->price = $_POST['price'];
+            $product->category = $_POST['category'];
+        }
+        if (isset($_POST['button']) && $_POST['button'] == 'Delete') {
+            $product->deleteProduct();
+            header('Location: ../Back/controller.php?f=productList');
+        }
+    } else {
+        if (isset($_POST['button']) && $_POST['button'] == 'Save') {
+            $product = new ProductClass($connection, $_POST['name'], $_POST['description'], $_POST['longDescription'], $_POST['price'], '', $_POST['category']);
+            // cargarlo de categorias 
+
+            $idLastInsert = $product->insertProduct();
+            
+//            var_dump($idLastInsert);
+            if ($idLastInsert != 0) {
+                product($idLastInsert);
+            }
+//            $product->insertProduct();
+        }
+    }
+    // cargarlo de categorias 
+    $options = array(
+        array(
+            'value' => '1',
+            'string' => 'Book'
+        ),
+        array(
+            'value' => '2',
+            'string' => 'Music'
+        )
+    );
 
     $titulo = $product->name;
     $description = $product->description;
     $palabrasClaves = 'palabrasClaves';
-
-
-    if ($product->imgs == '') {
-        $product->imgs = array('not-found.png');
-    }
-    var_dump($product);
 
     require_once '../../View/Back/Product.php';
 }
@@ -412,7 +446,7 @@ function recortar_texto($texto, $limite = 100) {
     return $resultado;
 }
 
-function updateImag() {
+function addImag() {
     require_once '../../Model/ImageClass.php';
     global $connection;
 
@@ -440,19 +474,43 @@ function updateImag() {
         move_uploaded_file($_FILES ['img']['tmp_name'], '../../img/' . $_FILES ['img']['name']);
     }
 
-    function deleteImag() {
-        require_once '../../Model/ImageClass.php';
-        global $connection;
 
-
-        if (isset($_POST['idImg'])) {
-            //file name
-
-            $img = new ImageClass($connection);
-            $img->fetch($_POST['idImg']);
-            $img->delete();
-        }
-    }
 
 //    $img = new ImageClass($connection, $name, $alt, $idProduct);
+}
+
+function deleteImag() {
+    require_once '../../Model/ImageClass.php';
+    global $connection;
+
+
+    if (isset($_POST['id'])) {
+        //file name
+        $img = new ImageClass($connection);
+        $img->fetch($_POST['id']);
+        $img->deleteImag();
+        unlink('../../img/' . $img->name);
+    }
+}
+
+function updateImag() {
+    require_once '../../Model/ImageClass.php';
+    global $connection;
+
+//    var_dump($_POST);
+
+    if (isset($_POST['id'])) {
+
+        $img = new ImageClass($connection);
+        $img->fetch($_POST['id']);
+        $img->alt = $_POST['alt'];
+//            var_dump($img);
+
+        $img->updateImag();
+//            unlink('../../img/' .$img->name);
+    }
+}
+
+function test() {
+    echo '<h1>TEST</h1>';
 }

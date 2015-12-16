@@ -25,6 +25,8 @@ class ProductClass {
     var $conex;
 
     public function __construct($conex, $name = '', $description = '', $longDescription = '', $price = '', $imgs = '', $category = '') {
+
+        
         // si esta vacio nada
         $this->conex = $conex;
         $this->db = $conex->db;
@@ -44,23 +46,68 @@ class ProductClass {
         $sql = 'SELECT * FROM `product` WHERE `idRow` =\'' . $id . '\'';
         $product = $this->conex->commitSelect($sql);
         $sql = 'SELECT * FROM `images` WHERE `idProduct` =\'' . $id . '\'';
-        $imgs= $this->conex->commitSelect($sql);
-         
+        $imgs = $this->conex->commitSelect($sql);
+
 //         var_dump($imgs);
-        
-        $this->id               = $product[0]['idRow'];
-        $this->name             = utf8_encode($product[0]['name']);
-        $this->description      = utf8_encode($product[0]['description']);
-        $this->longDescription  = utf8_encode($product[0]['longDescription']);
-        $this->price            = $product[0]['price'];
-        $this->imgs             = $imgs;
-        $this->category         = $product[0]['idCategory'];
-        
-        
+
+        $this->id = $product[0]['idRow'];
+        $this->name = utf8_encode($product[0]['name']);
+        $this->description = utf8_encode($product[0]['description']);
+        $this->longDescription = utf8_encode($product[0]['longDescription']);
+        $this->price = $product[0]['price'];
+        $this->imgs = $imgs;
+        $this->category = $product[0]['idCategory'];
     }
 
-    private function insertProduct() {
-        // si no existe guardar y si existe modificar
+    public function insertProduct() {
+
+        $sql = "INSERT INTO `product`( `name`, `description`, `longDescription`, `price`, `idCategory`) "
+                . "VALUES ("
+                . "'$this->name ',"
+                . "'$this->description',"
+                . "'$this->longDescription',"
+                . "'$this->price',"
+                . "'$this->category')";
+
+        if (isset($this->id)) {
+            $sql = 'UPDATE `product` SET';
+            $sql.= '`idRow` = \'' . $this->id . '\',';
+            $sql.= '`name` = \'' . $this->name . '\',';
+            $sql.= '`description` = \'' . $this->description . '\',';
+            $sql.= '`longDescription` = \'' . $this->longDescription . '\',';
+            $sql.= '`price` = \'' . $this->price . '\',';
+            $sql.= '`idCategory` = \'' . $this->category . '\'';
+            $sql.= ' WHERE`idRow` = \'' . $this->id . '\'';
+        }
+
+        $product = $this->conex->commitSelect($sql);
+        $id = $this->conex->db->lastInsertId();
+
+
+        return $id;
+    }
+    
+    public function deleteProduct(){
+        require_once __DIR__.'../ImageClass.php';
+//        var_dump($this->imgs);
+        
+        foreach ($this->imgs as $key => $value) {
+            $img = new ImageClass($this->conex);
+            $img->fetch($value['idRow']);
+            $img->deleteImag();
+        }
+        
+        $conn = $this->db;
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        $sql = "DELETE FROM `product` WHERE `idRow` = '$this->id'";
+        try {
+            $requete = $conn->prepare($sql);
+            $rel = $requete->execute();
+        } catch (Exception $exc) {
+            
+            echo 'Error : ' . $exc->getMessage();
+        }
     }
 
 }

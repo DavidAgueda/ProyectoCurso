@@ -106,7 +106,7 @@
 //                                    var_dump($listProducts);
             ?>
             <div class="row">
-                Buscar por nombre, por referencia, por categoria, portada?
+                <p><a  class ="btn btn-info glyphicon glyphicon-plus" href="controller.php?f=product" roll="button">Add Product </a></p>
 
             </div>
             <div class="row">
@@ -138,8 +138,9 @@
 
 
                                 </td>
-    <!--                                <td><?php echo $listProductsCart[$i]['price'] ?></td>-->
-                                <td> <a  class ="btn btn-danger glyphicon glyphicon-pencil" href="controller.php?f=product" roll="button">Change </a></td>
+                                
+    <!--                                <td><?php echo $listProducts[$i]['price'] ?></td>-->
+                                <td> <a  class ="btn btn-danger glyphicon glyphicon-pencil" href="controller.php?f=product&o=<?php echo $listProducts[$i]['id'] ?>" roll="button">Change </a></td>
                             </tr>
                         <?php } ?>
 
