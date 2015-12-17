@@ -1,6 +1,18 @@
 <?php
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+require_once '../../app/config.php';
+
 session_start();
+
+require_once '../../app/connection/Connexion.php';
+$connection = new Connexion($dbName, $host, $user, $pass);
+
+
 $viewLogin = false;
 if (isset($_SESSION['viewLogin'])) {
     $viewLogin = $_SESSION['viewLogin'];
@@ -11,13 +23,6 @@ if (!$viewLogin) {
 }
 //    var_dump($_SESSION);
 // puedo crear un usuario que pueda modificar suprimir ...
-require_once '../../app/connection/Connexion.php';
-$connection = new Connexion('Ecommerce', 'localhost', 'root', '');
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 
 $navegador = array(

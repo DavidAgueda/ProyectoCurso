@@ -1,16 +1,19 @@
 <?php
-
-session_start();
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+require_once '../../app/config.php';
+
+session_start();
 // puedo crear un usuario que pueda leer y crear una cuenta
 require_once '../../app/connection/Connexion.php';
-$connection = new Connexion('Ecommerce', 'localhost', 'root', '');
+$connection = new Connexion($dbName, $host, $user, $pass);
 //$connection= new Connexion($dataBaseName, $host, $user, $pass);
 
+
+if($_SESSION){}
 
 $navegador = array(
     array('string' => 'Products ', 'url' => 'controller.php?f=products'),
@@ -246,7 +249,12 @@ function login() {
     }
 
     if ($viewLogin) {
-        header('Location: ../Back/controller.php?f=index');
+        if($user->roll == 1){
+            header('Location: ../Back/controller.php?f=index');
+        }  elseif ($user->roll == 2) {
+            header('Location: ../Front/controller.php?f=index');
+        }
+        
     }
     if (isset($_POST['close'])) {
         $_SESSION['viewLogin'] = null;
