@@ -47,7 +47,7 @@
                     </button>
                 </div>
                 <div class="navbar-collapse collapse in" aria-expanded="true">
-                    <div id="name"><h2><?php if(isset($user->name)) echo $user->name; ?></h2></div>
+                    <div id="name"><h2><?php if (isset($user->name)) echo $user->name; ?></h2></div>
                     <ul class="nav navbar-nav">
                         <li class="activo"><a href="../../index.php">Home</a></li>
                         <?php
@@ -100,10 +100,9 @@
                                     <td><?php echo $listProductsCart[$i]['price'] ?></td>
                                     <td><button  onclick="removeCookie(<?php echo $listProductsCart[$i]['id'] ?>)" class ="bnt btn-danger" role="button">remove from cart </button></td>
                                 </tr>
-                            <?php 
+                                <?php
                             }
                         }
-                           
                         ?>
 
                     </tbody>
@@ -112,6 +111,15 @@
             </div>
 
             <hr>
+            <div>
+                <p class="pull-right">Total price : <?php echo $totalPrice ?> € </p>
+                <br>
+            </div>
+            <div>
+                <a class="btn btn-danger glyphicon " href="controller.php?f=login" roll="button">To connect</a>    
+                <a class="btn btn-danger glyphicon " href="controller.php?f=myProfil" roll="button">Create an account</a>    
+                <br>
+            </div>
 
             <footer>
                 <p>&copy; Company 2015</p>

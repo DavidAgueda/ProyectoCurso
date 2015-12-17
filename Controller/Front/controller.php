@@ -13,7 +13,7 @@ require_once '../../app/connection/Connexion.php';
 $connection = new Connexion($dbName, $host, $user, $pass);
 //$connection= new Connexion($dataBaseName, $host, $user, $pass);
 
-$user='';
+$user = '';
 $navegador = array(
     array('string' => 'Products ', 'url' => 'controller.php?f=products'),
     array('string' => 'Cart', 'url' => 'controller.php?f=cart'),
@@ -27,15 +27,9 @@ if (isset($_SESSION['idRow'])) {
     $navegador = array(
         array('string' => 'Products ', 'url' => 'controller.php?f=products'),
         array('string' => 'Cart', 'url' => 'controller.php?f=cart'),
-        array('string' => 'My profile ', 'url' => ''), // pasarle un dato para usarlo con admin 
-        array('string' => 'Logout', 'url' => 'controller.php?f=logout')
+        array('string' => 'My profile ', 'url' => 'controller.php?f=myProfil'), // pasarle un dato para usarlo con admin 
+        array('string' => 'Logout', 'url' => '../Back/controller.php?f=logout')
     );
-}
-
-function logout() {
-    $_SESSION['viewLogin'] = false;
-    $_SESSION['idRow'] = null;
-    header('Location: ../Front/controller.php?f=index');
 }
 
 function index() {
@@ -208,7 +202,7 @@ function cart() {
     $titulo = 'Cart';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-
+    $totalPrice = 0;
     if (isset($_COOKIE['Products'])) {
         if ($_COOKIE['Products'] != '[]' || $_COOKIE['Products'] != NULL) {
             $productsCart = $_COOKIE['Products'];
@@ -236,6 +230,8 @@ function cart() {
                         'img' => $img,
                         'id' => $product->id
                     );
+
+                    $totalPrice = floatval($product->price) + $totalPrice;
                 }
             }
         }
@@ -276,6 +272,8 @@ function login() {
             header('Location: ../Back/controller.php?f=index');
         } elseif ($user->roll == 2) {
             header('Location: ../Front/controller.php?f=index');
+        }else{
+            header('Location: ../Front/controller.php?f=index');
         }
     }
     if (isset($_POST['close'])) {
@@ -304,6 +302,53 @@ function okMail() {
         . '</strong>s'
     );
     require_once '../okmail.php';
+}
+
+function myProfil() {
+    global $navegador;
+    global $user;
+    global $connection;
+    $titulo = 'My Profile';
+    $description = '';
+    $palabrasClaves = 'palabrasClaves';
+
+    $from = false;
+
+    var_dump($_POST);
+
+    if ($user == '') {
+        require_once '../../Model/UserClass.php';
+        $user = new UserClass($connection);
+//        var_dump($user);
+        $from = true;
+    }
+
+    if (!empty($_POST)) {
+        if ($_POST['button'] == 'Save') {
+
+//                $user->user = $_POST['name'];
+//                $user->pass = $_POST['LastName'];
+            $user->name = $_POST['name'];
+            $user->lastName = $_POST['LastName'];
+            $user->date = $_POST['Birthdate'];
+            $user->email = $_POST['Email'];
+            $user->sexe = $_POST['Gender'];
+            $user->address = $_POST['Address'];
+            $user->user = $_POST['userName'];
+            $user->pass = $_POST['Password'];
+//                $user->roll = $_POST[''];
+            $user->setInDB();
+        } elseif ($_POST['button'] == 'Change my data') {
+            $from = true;
+        } elseif ($_POST['button'] == 'Back') {
+            $from = false;
+        }
+    }
+
+
+//    var_dump($user);
+
+    require_once '../../View/Back/myProfil.php';
 }
 
 function redire() {

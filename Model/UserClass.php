@@ -78,6 +78,11 @@ class UserClass {
                 $this->pass = $row['pass'];
                 $this->name = $row['name'];
                 $this->roll = $row['idRoll'];
+                $this->lastName = $row['lastName'];
+                $this->date = $row['date'];
+                $this->email = $row['email'];
+                $this->sexe = $row['sexe'];
+                $this->address = $row['address'];
                 return array($row['user'], $row['pass'], $row['name']);
             }
         }
@@ -89,7 +94,22 @@ class UserClass {
     public function setInDB() {
         $conn = $this->db;
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = 'INSERT INTO user(user, pass, name) VALUES (\'' . $this->user . '\',\'' . $this->pass . '\',\'' . $this->name . '\')';
+        $sql = 'INSERT INTO user(user, pass, name, idRoll, lastName, email, sexe, address ) '
+                . 'VALUES (\'' . $this->user . '\',\'' . $this->pass . '\',\'' . $this->name . '\',\'' . $this->roll . '\',\'' . $this->lastName . '\',\'' . $this->email . '\',\'' . $this->sexe . '\',\'' . $this->address . '\')';
+        if (isset($this->id)) {
+            $sql = 'UPDATE `user` SET';
+            $sql.= '`idRow` = \'' . $this->id . '\',';
+            $sql.= '`user` = \'' . $this->user . '\',';
+            $sql.= '`pass` = \'' . $this->pass . '\',';
+            $sql.= '`name` = \'' . $this->name . '\',';
+            $sql.= '`idRoll` = \'' . $this->roll . '\',';
+            $sql.= '`lastName` = \'' . $this->lastName . '\',';
+            $sql.= '`email` = \'' . $this->email . '\',';
+            $sql.= '`sexe` = \'' . $this->sexe . '\',';
+            $sql.= '`address` = \'' . $this->address . '\'';
+            $sql.= ' WHERE`idRow` = \'' . $this->id . '\'';
+        }
+        
         try {
             $requete = $conn->prepare($sql);
             $rel = $requete->execute();
@@ -104,11 +124,16 @@ class UserClass {
         $sql = 'SELECT * FROM `user` WHERE `idRow` =\'' . $id . '\'';
         $user = $this->conex->commitSelect($sql);
 
-        $this->id   = $user[0]['idRow'];
+        $this->id = $user[0]['idRow'];
         $this->user = $user[0]['user'];
         $this->pass = $user[0]['pass'];
         $this->name = $user[0]['name'];
         $this->roll = $user[0]['idRoll'];
+        $this->lastName = $user[0]['lastName'];
+        $this->date = $user[0]['date'];
+        $this->email = $user[0]['email'];
+        $this->sexe = $user[0]['sexe'];
+        $this->address = $user[0]['address'];
     }
 
 }
