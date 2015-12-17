@@ -42,6 +42,7 @@ $navegadorAdmin = array(
 
 function logout() {
     $_SESSION['viewLogin'] = false;
+    $_SESSION['idRow'] = null;
     header('Location: ../Front/controller.php?f=index');
 }
 

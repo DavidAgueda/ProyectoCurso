@@ -1,4 +1,5 @@
 <?php
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -12,17 +13,34 @@ require_once '../../app/connection/Connexion.php';
 $connection = new Connexion($dbName, $host, $user, $pass);
 //$connection= new Connexion($dataBaseName, $host, $user, $pass);
 
-
-if($_SESSION){}
-
+$user='';
 $navegador = array(
     array('string' => 'Products ', 'url' => 'controller.php?f=products'),
     array('string' => 'Cart', 'url' => 'controller.php?f=cart'),
     array('string' => 'Login ', 'url' => 'controller.php?f=login')
 );
 
+if (isset($_SESSION['idRow'])) {
+    require_once '../../Model/UserClass.php';
+    $user = new UserClass($connection);
+    $user->fetch($_SESSION['idRow']);
+    $navegador = array(
+        array('string' => 'Products ', 'url' => 'controller.php?f=products'),
+        array('string' => 'Cart', 'url' => 'controller.php?f=cart'),
+        array('string' => 'My profile ', 'url' => ''), // pasarle un dato para usarlo con admin 
+        array('string' => 'Logout', 'url' => 'controller.php?f=logout')
+    );
+}
+
+function logout() {
+    $_SESSION['viewLogin'] = false;
+    $_SESSION['idRow'] = null;
+    header('Location: ../Front/controller.php?f=index');
+}
+
 function index() {
     global $navegador;
+    global $user;
 
     $titulo = 'Titulo';
     $description = 'description';
@@ -77,6 +95,7 @@ function index() {
 
 function contact() {
     global $navegador;
+    global $user;
     $titulo = 'Contacto';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
@@ -96,6 +115,7 @@ function products($category = '') {
     require_once '../../Model/ProductClass.php';
     global $navegador;
     global $connection;
+    global $user;
     $titulo = 'Products';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
@@ -155,6 +175,7 @@ function product($idProduct = '') {
     require_once '../../Model/ProductClass.php';
     global $navegador;
     global $connection;
+    global $user;
 
 
     $product = new ProductClass($connection);
@@ -183,37 +204,39 @@ function cart() {
     require_once '../../Model/ProductClass.php';
     global $navegador;
     global $connection;
+    global $user;
     $titulo = 'Cart';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
 
+    if (isset($_COOKIE['Products'])) {
+        if ($_COOKIE['Products'] != '[]' || $_COOKIE['Products'] != NULL) {
+            $productsCart = $_COOKIE['Products'];
 
-    if ($_COOKIE['Products'] != '[]' || $_COOKIE['Products'] != NULL) {
-        $productsCart = $_COOKIE['Products'];
 
+            $productsCart = str_replace("[", "", $productsCart);
+            $productsCart = str_replace("]", "", $productsCart);
 
-        $productsCart = str_replace("[", "", $productsCart);
-        $productsCart = str_replace("]", "", $productsCart);
+            if ($productsCart != '') {
+                $productsCart = explode(",", $productsCart);
+                foreach ($productsCart as $key => $value) {
+                    $product = new ProductClass($connection);
+                    $product->fetch($value);
 
-        if ($productsCart != '') {
-            $productsCart = explode(",", $productsCart);
-            foreach ($productsCart as $key => $value) {
-                $product = new ProductClass($connection);
-                $product->fetch($value);
+                    if (!isset($product->imgs[0]['name'])) {
+                        $img = 'not-found.png';
+                    } else {
+                        $img = $product->imgs[0]['name'];
+                    }
 
-                if (!isset($product->imgs[0]['name'])) {
-                    $img = 'not-found.png';
-                } else {
-                    $img = $product->imgs[0]['name'];
+                    $listProductsCart[] = array(
+                        'name' => $product->name,
+                        'description' => $product->description,
+                        'price' => $product->price,
+                        'img' => $img,
+                        'id' => $product->id
+                    );
                 }
-
-                $listProductsCart[] = array(
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'price' => $product->price,
-                    'img' => $img,
-                    'id' => $product->id
-                );
             }
         }
     }
@@ -224,13 +247,13 @@ function cart() {
 
 function login() {
     require_once '../../Model/UserClass.php';
+
+    global $connection;
+    global $user;
+
     $titulo = 'Login';
     $description = 'Login';
     $palabrasClaves = 'Login';
-
-
-
-    global $connection;
     $viewLogin = false;
     if (isset($_SESSION['viewLogin'])) {
         $viewLogin = $_SESSION['viewLogin'];
@@ -249,12 +272,11 @@ function login() {
     }
 
     if ($viewLogin) {
-        if($user->roll == 1){
+        if ($user->roll == 1) {
             header('Location: ../Back/controller.php?f=index');
-        }  elseif ($user->roll == 2) {
+        } elseif ($user->roll == 2) {
             header('Location: ../Front/controller.php?f=index');
         }
-        
     }
     if (isset($_POST['close'])) {
         $_SESSION['viewLogin'] = null;
@@ -266,6 +288,7 @@ function login() {
 
 function okMail() {
     global $navegador;
+    global $user;
     $titulo = 'Email enviado con exito';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
