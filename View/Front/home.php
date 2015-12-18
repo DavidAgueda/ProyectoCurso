@@ -44,7 +44,7 @@
                 <div class="navbar-collapse collapse in" aria-expanded="true">
                     <div id="name"><h2><?php if(isset($user->name)) echo $user->name; ?></h2></div>
                     <ul class="nav navbar-nav">
-                        <li class="activo"><a href="../../index.php">Home</a></li>
+                        <li class=""><a href="../../index.php">Home</a></li>
                         <?php
                         for ($i = 0; $i < count($navegador); $i++) {
                             if ($navegador[$i]['string'] == 'Cart') {

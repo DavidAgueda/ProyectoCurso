@@ -72,15 +72,6 @@
                         }
                         ?>
                         <li><a href="controller.php?f=contact">Contact</a></li>
-                        <?php
-                        if ($viewLogin) {
-                            ?> 
-                            <form method="post">
-                                <input class="navbar-brand" type="submit" name="close" value="Close Session">
-                            </form>
-                            <?php
-                        }
-                        ?>
                     </ul>
                 </div>
             </div>
@@ -95,12 +86,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <h2>Orders Status</h2>
                     <canvas id="myPieChart1" class="classPie"></canvas>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <h2>Orders Status</h2>
                     <canvas id="myPieChart2" class="classPie"></canvas>
                 </div>

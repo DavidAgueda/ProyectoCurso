@@ -267,6 +267,10 @@ function product($idProduct = "") {
         }
 
         if (isset($_POST['button']) && $_POST['button'] == 'Save') {
+            
+            if(!is_numeric($_POST['price'])){
+                echo '<script>alert("Error : price It is not a numeric value")</script>';
+            }else{
             $product->name = $_POST['name'];
             $product->description = $_POST['description'];
             $product->longDescription = $_POST['longDescription'];
@@ -274,6 +278,7 @@ function product($idProduct = "") {
             $product->category = $_POST['category'];
             
             $product->insertProduct();
+            }
         }
         if (isset($_POST['button']) && $_POST['button'] == 'Delete') {
             $product->deleteProduct();

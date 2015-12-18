@@ -249,13 +249,17 @@ function login() {
     }
 
     if ($viewLogin) {
+        
         if ($user->roll == 1) {
             header('Location: ../Back/controller.php?f=index');
         } elseif ($user->roll == 2) {
+//            echo '<script>alert("1")</script>';
             header('Location: ../Front/controller.php?f=index');
         } else {
+//            echo '<script>alert("2")</script>';
             header('Location: ../Front/controller.php?f=index');
         }
+         echo '<script>alert("3")</script>';
     }
     if (isset($_POST['close'])) {
         $_SESSION['viewLogin'] = null;

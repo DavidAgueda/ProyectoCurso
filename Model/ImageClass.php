@@ -42,7 +42,7 @@ class ImageClass {
         $conn = $this->db;
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        $sql = 'INSERT INTO images(name, idProduct, alt) VALUES (\'' . $this->name . '\',\'' . $this->idProduct . '\',\'' . $this->alt . '\')';
+        $sql = 'INSERT INTO images(name, idProduct, alt) VALUES (\'' . utf8_encode($this->name) . '\',\'' . $this->idProduct . '\',\'' . $this->alt . '\')';
         try {
             $requete = $conn->prepare($sql);
             $rel = $requete->execute();

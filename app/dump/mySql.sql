@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 18 Décembre 2015 à 14:37
+-- Généré le :  Ven 18 Décembre 2015 à 17:09
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `ecommerce`
+-- Base de données :  `toto`
 --
 
 -- --------------------------------------------------------
@@ -66,7 +66,7 @@ INSERT INTO `images` (`idRow`, `idProduct`, `name`, `alt`) VALUES
 (25, 5, 'skap-99_0.jpg', 'Skap'),
 (26, 5, 'Koala.jpg', 'tata'),
 (30, 27, 'Chrysanthemum.jpg', 'flor'),
-(31, 27, 'Penguins.jpg', 'pingÃ¼inos');
+(31, 27, 'Penguins.jpg', 'pinginos');
 
 -- --------------------------------------------------------
 
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   `idCategory` int(11) NOT NULL,
   PRIMARY KEY (`idRow`),
   KEY `idRow` (`idRow`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 --
 -- Contenu de la table `product`
@@ -114,8 +114,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `sexe` varchar(25) NOT NULL,
   `date` varchar(25) NOT NULL,
   `address` varchar(255) NOT NULL,
-  PRIMARY KEY (`idRow`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+  PRIMARY KEY (`idRow`),
+  UNIQUE KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Contenu de la table `user`
@@ -123,13 +124,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`idRow`, `user`, `pass`, `name`, `idRoll`, `lastName`, `email`, `sexe`, `date`, `address`) VALUES
 (1, 'admin', 'admin', 'Admin', 1, '', '', '', '', ''),
-(2, 'user', 'user', 'Test user', 2, 'user', 'Test ---', 'user', '20/20/2015', 'toto'),
-(7, '', '', 'toto', 0, 'toto', 'toto@toto.mail', 'chat', '', '11 rue perdu'),
-(8, '', '', 'toto', 0, 'toto', 'toto@toto.mail', 'chat', '', '11 rue perdu'),
-(9, 'titi', 'titi', 'titi', 0, 'titi', 'toto@toto.mail', 'chat', '', '11 rue perdu'),
-(10, 'tata', 'tata', 'tata', 0, 'tata', 'tata', 'tata', '', '10'),
-(11, 'tutu', 'tutu', 'tutu', 0, 'tutu', 'tutu@tutu.com', 'toto', '', 'ttt'),
-(12, 'david', 'david', 'david', 0, 'david', 'david', 'david', '', 'david');
+(2, 'user', 'user', 'Test user', 2, 'user', 'Test@test.test', '0', '20/20/2015', 'toto');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
