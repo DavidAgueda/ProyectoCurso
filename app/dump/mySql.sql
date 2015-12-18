@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 16 Décembre 2015 à 16:50
+-- Généré le :  Ven 18 Décembre 2015 à 14:37
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -53,18 +53,20 @@ CREATE TABLE IF NOT EXISTS `images` (
   `alt` varchar(255) NOT NULL,
   PRIMARY KEY (`idRow`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 --
 -- Contenu de la table `images`
 --
 
 INSERT INTO `images` (`idRow`, `idProduct`, `name`, `alt`) VALUES
-(1, 1, 'leCapitalAuXXI.jpg', 'alt'),
+(1, 1, 'leCapitalAuXXI.jpg', 'toto'),
 (2, 1, 'not-found.png', 'alt'),
 (16, 1, 'Desert.jpg', 'titi'),
-(17, 5, 'skap-99_0.jpg', '99% Skap'),
-(22, 27, 'Tulips.jpg', 'tata');
+(25, 5, 'skap-99_0.jpg', 'Skap'),
+(26, 5, 'Koala.jpg', 'tata'),
+(30, 27, 'Chrysanthemum.jpg', 'flor'),
+(31, 27, 'Penguins.jpg', 'pingÃ¼inos');
 
 -- --------------------------------------------------------
 
@@ -93,7 +95,7 @@ INSERT INTO `product` (`idRow`, `name`, `description`, `longDescription`, `price
 (3, 'Manifeste du Parti communiste', 'Vous êtes saisis d''horreur parce que nous voulons abolir la propriété privée. Mais, dans votre société actuelle, la propriété privée est abolie pour les neuf dixièmes de ses membres : si cette société existe, c''est précisément parce qu''elle n''existe pas pour ces neuf dixièmes. Vous nous reprochez donc de ', 'Vous êtes saisis d''horreur parce que nous voulons abolir la propriété privée. Mais, dans votre société actuelle, la propriété privée est abolie pour les neuf dixièmes de ses membres : si cette société existe, c''est précisément parce qu''elle n''existe pas pour ces neuf dixièmes. Vous nous reprochez donc de vouloir abolir une forme de propriété qui a pour condition nécessaire que l''immense majorité de la société soit frustrée de toute propriété. En un mot, vous nous accusez de vouloir abolir votre propriété à vous. En vérité, c''est bien ce que nous voulons. " Publié pour la première fois en février 1848 à Londres, le Manifeste de Marx et Engels, à l''écriture si rigoureuse et tranchante, n''a rien perdu de sa vigueur critique ni de son intérêt philosophique.', '3.90', 1),
 (4, 'Todo Ska-P', 'etrouvez leurs morceaux les plus emblématiques\r\n+ 11 clips\r\n+ le Live mythique inédit enregistré à la Fête de l''Huma en 2001 !', '5 ans après leur dernier album (écoulé en France à 25 000 exemplaires),\r\nSka-P revient avec leur premier Best Of et avec une nouvelle tournée Européenne', '10.32', 2),
 (5, '99%--', 'rien a redire Ã©videmment il faut aimer Ska p et leur musique mais surtout prendre les paroles au 2eme degrÃ©s .Sinon s est super', 'Enfin le nouvel album de ska-p! Excellent, superbes musique et paroles, vous allez adorer! On retrouve toute leur Ã©nergie! Du pur bonheur...', '8.37', 2),
-(27, 'toto ', 'toto', 'toto', '10', 1);
+(27, 'Produit Test', 'Voici la description de produit', 'Ici la description longe de produir , pingüinos éàè', '10', 1);
 
 -- --------------------------------------------------------
 
@@ -106,16 +108,28 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user` varchar(255) NOT NULL,
   `pass` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `idRoll` int(11) NOT NULL,
+  `idRoll` int(11) NOT NULL DEFAULT '2',
+  `lastName` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `sexe` varchar(25) NOT NULL,
+  `date` varchar(25) NOT NULL,
+  `address` varchar(255) NOT NULL,
   PRIMARY KEY (`idRow`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Contenu de la table `user`
 --
 
-INSERT INTO `user` (`idRow`, `user`, `pass`, `name`, `idRoll`) VALUES
-(1, 'admin', 'admin', 'Admin', 1);
+INSERT INTO `user` (`idRow`, `user`, `pass`, `name`, `idRoll`, `lastName`, `email`, `sexe`, `date`, `address`) VALUES
+(1, 'admin', 'admin', 'Admin', 1, '', '', '', '', ''),
+(2, 'user', 'user', 'Test user', 2, 'user', 'Test ---', 'user', '20/20/2015', 'toto'),
+(7, '', '', 'toto', 0, 'toto', 'toto@toto.mail', 'chat', '', '11 rue perdu'),
+(8, '', '', 'toto', 0, 'toto', 'toto@toto.mail', 'chat', '', '11 rue perdu'),
+(9, 'titi', 'titi', 'titi', 0, 'titi', 'toto@toto.mail', 'chat', '', '11 rue perdu'),
+(10, 'tata', 'tata', 'tata', 0, 'tata', 'tata', 'tata', '', '10'),
+(11, 'tutu', 'tutu', 'tutu', 0, 'tutu', 'tutu@tutu.com', 'toto', '', 'ttt'),
+(12, 'david', 'david', 'david', 0, 'david', 'david', 'david', '', 'david');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

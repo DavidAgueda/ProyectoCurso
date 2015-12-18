@@ -43,7 +43,7 @@ function index() {
     $titulo = 'David\'s SHOP';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
-    $slide=array();
+    $slide = array();
 
     $productsSlide = productsSlide($connection);
 
@@ -59,7 +59,7 @@ function index() {
         }
         $slide[] = array(
             'title' => $product->name,
-            'url' => 'controller.php?f=product&o='. $product->id,
+            'url' => 'controller.php?f=product&o=' . $product->id,
             'description' => $product->description,
             'image' => $img
         );
@@ -157,7 +157,7 @@ function product($idProduct = '') {
 
     $product->fetch($idProduct);
 
-    $titulo = 'David\'s SHOP - '.$product->name;
+    $titulo = 'David\'s SHOP - ' . $product->name;
     $description = $product->description;
     $palabrasClaves = 'palabrasClaves';
 
@@ -305,21 +305,31 @@ function myProfil() {
     if (!empty($_POST)) {
         if ($_POST['button'] == 'Save') {
 
+            if (!filter_var($_POST['Email'], FILTER_VALIDATE_EMAIL)) {
+                echo '<script>alert("Error : Email not valid")</script>';
+                $from = true;
+            } else {
+                
+                if(preg_match("/^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$/", $_POST['Birthdate']) === 0) {
+                    echo '<script>alert("Error : Date not valid")</script>';
+                }
 //                $user->user = $_POST['name'];
 //                $user->pass = $_POST['LastName'];
-            $user->name = $_POST['name'];
-            $user->lastName = $_POST['LastName'];
-            $user->date = $_POST['Birthdate'];
-            $user->email = $_POST['Email'];
-            $user->sexe = $_POST['Gender'];
-            $user->address = $_POST['Address'];
-            $user->user = $_POST['userName'];
-            $user->pass = $_POST['Password'];
+                $user->name = $_POST['name'];
+                $user->lastName = $_POST['LastName'];
+                $user->date = $_POST['Birthdate'];
+                $user->email = $_POST['Email'];
+                $user->sexe = $_POST['Gender'];
+                $user->address = $_POST['Address'];
+                $user->user = $_POST['userName'];
+                $user->pass = $_POST['Password'];
 //                $user->roll = $_POST[''];
-            $id = $user->setInDB();
-            $_SESSION['idRow'] = $id;
-            header('Location: ../Front/controller.php?f=index');
-            
+                $id = $user->setInDB();
+                if ($id != 0) {
+                    $_SESSION['idRow'] = $id;
+                    header('Location: ../Front/controller.php?f=index');
+                }
+            }
         } elseif ($_POST['button'] == 'Change my data') {
             $from = true;
         } elseif ($_POST['button'] == 'Back') {

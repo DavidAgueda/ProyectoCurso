@@ -164,162 +164,160 @@
 
             <hr>
 
-                <div class="row" id="imgs">
-
-                </div>
-
+            <div class="row" id="imgs">
 
             </div>
 
-            <hr>
+
+        </div>
+
+        <hr>
 
 
 
 
-            <footer>
-                <p>&copy; Company 2015</p>
-            </footer>
+        <footer>
+            <p>&copy; Company 2015</p>
+        </footer>
 
-        </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
-        <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-1.11.2.js"><\/script>')</script>
+    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
+    <script>window.jQuery || document.write('<script src="../../js/vendor/jquery-1.11.2.js"><\/script>')</script>
 
-        <script src="../../js/vendor/bootstrap.min.js"></script>
+    <script src="../../js/vendor/bootstrap.min.js"></script>
 
-        <script src="../../js/main.js"></script>
+    <script src="../../js/main.js"></script>
 
-        <script>
-                        $(document).ready(function () {
-                            $('.address').hide();
-                            readImgs();
-                        })
-                        function hiddenAddress(button) {
+    <script>
+        $(document).ready(function () {
+            $('.address').hide();
+            readImgs();
+        })
+        function hiddenAddress(button) {
 //                console.log(button);
-                            console.log();
-                            $(button).next().toggle();
-                        }
-        </script>
-        <script>
-            $("#enviarimagenes").on("submit", function (e) {
-                e.preventDefault();
-                var formData = new FormData(document.getElementById("enviarimagenes"));
+            console.log();
+            $(button).next().toggle();
+        }
+        $("#enviarimagenes").on("submit", function (e) {
+            e.preventDefault();
+            var formData = new FormData(document.getElementById("enviarimagenes"));
 
-                $.ajax({
-                    url: "./controller.php?f=addImag",
-                    type: "POST",
-                    dataType: "HTML",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                }).done(function (echo) {
-                    $("#mensaje").html(echo);
+            $.ajax({
+                url: "./controller.php?f=addImag",
+                type: "POST",
+                dataType: "HTML",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function (echo) {
+                $("#mensaje").html(echo);
 
-                    if (echo == '') {
-                         readImgs();
-                    }
-                }).fail(function () {
-                    alert("Error uploading the picture.");
-                });
+                if (echo == '') {
+                    readImgs();
+                }
+            }).fail(function () {
+                alert("Error uploading the picture.");
             });
+        });
 
 
-            var funtDelete = function deleteImg(id) {
-                var parametros = {
-                    "id": id
-                };
-                $.ajax({
-                    data: parametros,
-                    url: './controller.php?f=deleteImag',
-                    type: 'post'
-                }).done(function (echo) {
-                    $("#mensaje").html(echo);
+        var funtDelete = function deleteImg(id) {
+            var parametros = {
+                "id": id
+            };
+            $.ajax({
+                data: parametros,
+                url: './controller.php?f=deleteImag',
+                type: 'post'
+            }).done(function (echo) {
+                $("#mensaje").html(echo);
 
-                    if (echo == '') {
-                        readImgs();
-                    }
+                if (echo == '') {
+                    readImgs();
+                }
 
-                });
-            }
-            function updateImg(id) {
-                var parametros = {
-                    "id": id,
-                    "alt": $('#alt' + id).val()
-                };
+            });
+        }
+        function updateImg(id) {
+            var parametros = {
+                "id": id,
+                "alt": $('#alt' + id).val()
+            };
 
-                console.log(parametros);
-                $.ajax({
-                    data: parametros,
-                    url: './controller.php?f=updateImag',
-                    type: 'post'
-                }).done(function (echo) {
-                    $("#mensaje").html(echo);
+            console.log(parametros);
+            $.ajax({
+                data: parametros,
+                url: './controller.php?f=updateImag',
+                type: 'post'
+            }).done(function (echo) {
+                $("#mensaje").html(echo);
 
-                    if (echo == '') {
-                        readImgs();
-                    }
+                if (echo == '') {
+                    readImgs();
+                }
 
-                });
-            }
+            });
+        }
 
-            function readImgs() {
-                var parametros = {
-                    "id": <?php echo $_GET['o'] ?>
-                };
-                $.ajax({
-                    data: parametros,
-                    url: '../../Model/getImgsAjax.php',
-                    type: 'post'
-                }).done(function (echo) {
-                    echo = JSON.parse(echo);
-                    $('#imgs').html('');
+        function readImgs() {
+            var parametros = {
+                "id": <?php echo $_GET['o'] ?>
+            };
+            $.ajax({
+                data: parametros,
+                url: '../../Model/getImgsAjax.php',
+                type: 'post'
+            }).done(function (echo) {
+                echo = JSON.parse(echo);
+                $('#imgs').html('');
 //                    console.log(echo[0]['name'])
-                    for (var i = 0; i < echo.length; i++) {
-                        var div = $('<div/>');
-                        div.addClass('col-md-4 col-xs-4');
-                        var img = $('<img/>');
-                        img.addClass('thumbnail');
-                        img.attr('src', '../../img/' + echo[i]['name']);
-                        img.attr('alt', echo[i]['alt']);
-                        img.attr('style', 'width:200px;height:200px;');
+                for (var i = 0; i < echo.length; i++) {
+                    var div = $('<div/>');
+                    div.addClass('col-md-4 col-xs-4');
+                    var img = $('<img/>');
+                    img.addClass('thumbnail');
+                    img.attr('src', '../../img/' + echo[i]['name']);
+                    img.attr('alt', echo[i]['alt']);
+                    img.attr('style', 'width:200px;height:200px;');
 
-                        var label = $('<label/>');
-                        label.addClass('col-md-4 control-label');
-                        label.attr('for', 'alt' + echo[i]['idRow']);
-                        label.html('Alt');
+                    var label = $('<label/>');
+                    label.addClass('col-md-4 control-label');
+                    label.attr('for', 'alt' + echo[i]['idRow']);
+                    label.html('Alt');
 
-                        var input = $('<input/>');
-                        input.addClass('form-control input-md');
-                        input.attr('id', 'alt' + echo[i]['idRow']);
-                        input.attr('name', 'alt' + echo[i]['idRow']);
-                        input.attr('required', '');
-                        input.attr('type', 'text');
-                        input.attr('value', echo[i]['alt']);
+                    var input = $('<input/>');
+                    input.addClass('form-control input-md');
+                    input.attr('id', 'alt' + echo[i]['idRow']);
+                    input.attr('name', 'alt' + echo[i]['idRow']);
+                    input.attr('required', '');
+                    input.attr('type', 'text');
+                    input.attr('value', echo[i]['alt']);
 
-                        var button1 = $('<button/>');
-                        button1.addClass('btn btn-danger');
-                        button1.attr('type', 'button');
-                        button1.attr('onclick', "funtDelete("+echo[i]['idRow']+")");
-                        button1.html('Delete');
-                        
-                        var button2 = $('<button/>');
-                        button2.addClass('btn btn-success');
-                        button2.attr('type', 'button');
-                        button2.attr('onclick', "updateImg("+echo[i]['idRow']+")");
-                        button2.html('Save');
+                    var button1 = $('<button/>');
+                    button1.addClass('btn btn-danger');
+                    button1.attr('type', 'button');
+                    button1.attr('onclick', "funtDelete(" + echo[i]['idRow'] + ")");
+                    button1.html('Delete');
+
+                    var button2 = $('<button/>');
+                    button2.addClass('btn btn-success');
+                    button2.attr('type', 'button');
+                    button2.attr('onclick', "updateImg(" + echo[i]['idRow'] + ")");
+                    button2.html('Save');
 
 
-                        div.append(img);
-                        div.append(label);
-                        div.append(input);
-                        div.append(button1);
-                        div.append(button2);
-                       
-                        $('#imgs').append(div);
-                    }
-                });
-            }
+                    div.append(img);
+                    div.append(label);
+                    div.append(input);
+                    div.append(button1);
+                    div.append(button2);
 
-        </script>
+                    $('#imgs').append(div);
+                }
+            });
+        }
 
-    </body>
+    </script>
+
+</body>
 </html>

@@ -48,7 +48,7 @@
                     </button>
                 </div>
                 <div class="navbar-collapse collapse in" aria-expanded="true">
-                    <div id="name"><h2><?php if(isset($user->name)) echo $user->name; ?></h2></div>
+                    <div id="name"><h2><?php if (isset($user->name)) echo $user->name; ?></h2></div>
                     <ul class="nav navbar-nav">
                         <li class="activo"><a href="controller.php?f=index">Home</a></li>
                         <?php
@@ -76,145 +76,146 @@
             </div>
             <div class="row">
                 <?php
-                if(!$from){
-                ?>
-                <form class="form-horizontal" method="post" action="">
-                    <div class="form-group">
-                        <div class="col-md-4">
-                            <input type="submit"  id="save" name="button" type="button" class="btn btn-success " value ="Change my data">
+                if (!$from) {
+                    ?>
+                    <form class="form-horizontal" method="post" action="">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <input type="submit"  id="save" name="button" type="button" class="btn btn-success " value ="Change my data">
 
+                            </div>
                         </div>
-                    </div>
-                </form>
-                
-                  <table class="table">
-    <tbody>
-      <tr>
-        <td>Name :</td>
-        <td><?php echo $user->name ;?></td>
-      </tr>
-      <tr>
-        <td>LastName</td>
-        <td><?php echo $user->lastName ;?></td>
-      </tr>
-      <tr>
-         <td>Email</td>
-        <td><?php echo $user->email ;?></td>
-      </tr>
-      <tr>
-        <td>Birthdate</td>
-        <td><?php echo $user->date ;?></td>
-      </tr>
-      <tr>
-        <td>Gender</td>
-        <td><?php echo $user->sexe ;?></td>
-      </tr>
-      <tr>
-        <td>Address</td>
-        <td><?php echo $user->address ;?></td>
-      </tr>
+                    </form>
 
-    </tbody>
-  </table>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Name :</td>
+                                <td><?php echo $user->name; ?></td>
+                            </tr>
+                            <tr>
+                                <td>LastName</td>
+                                <td><?php echo $user->lastName; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><?php echo $user->email; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Birthdate</td>
+                                <td><?php echo $user->date; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td><?php echo $user->sexe; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td><?php echo $user->address; ?></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <?php
+                } else {
+                    ?>
+                    <form class="form-horizontal" method="post" action="">
+                        <fieldset>
+
+                            <!-- Form Name -->
+                            <legend> User <?php echo $user->name ?>  </legend>
+                            <?php if (isset($_SESSION['idRow'])) { ?>
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="submit"  id="save" name="button" type="button" class="btn btn-info " value ="Back">
+
+                                    </div>
+                                </div>
+                            <?php } ?>
+
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="name">Name</label>  
+                                <div class="col-md-4">
+                                    <input id="name" name="name" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->name ?>">
+
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="LastName">Last name</label>  
+                                <div class="col-md-4">
+                                    <input id="LastName" name="LastName" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->lastName ?>">
+
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Email">Email</label>  
+                                <div class="col-md-4">
+                                    <input id="Email" name="Email" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->email ?>">
+
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Birthdate">Birthdate</label>  
+                                <div class="col-md-4">
+                                    <input id="Birthdate" name="Birthdate" placeholder="" class="form-control input-md" required="" type="date" value="<?php echo $user->date ?>">
+
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Gender">Gender</label>  
+                                <div class="col-md-4">
+                                    <select  id="Gender" name="Gender" placeholder="" class="form-control input-md">
+                                        <option value="0">masculine </option>
+                                        <option value="1">feminine </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Address">Address</label>  
+                                <div class="col-md-4">
+                                    <input id="Address" name="Address" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->address ?>">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <h3>Data connection</h3>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="userName">User name</label>  
+                                <div class="col-md-4">
+                                    <input id="userName" name="userName" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->user ?>">
+
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="Password">Password</label>  
+                                <div class="col-md-4">
+                                    <input id="Address" name="Password" placeholder="" class="form-control input-md" required="" type="password" value="<?php echo $user->pass ?>">
+
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="form-group">
+                                <div class="col-md-4">
+    <!--                                <input type="submit"  id="delete" name="button" type="button" class="btn btn-danger" value ="Delete">-->
+                                    <input type="submit"  id="save" name="button" type="button" class="btn btn-success" value ="Save">
+
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
                 <?php
-                }else{
-                ?>
-                <form class="form-horizontal" method="post" action="">
-                    <fieldset>
-
-                        <!-- Form Name -->
-                        <legend> User <?php echo $user->name ?>  </legend>
-                                        <?php
-                    if (isset($_SESSION['idRow'])) { ?>
-                        <div class="form-group">
-                        <div class="col-md-4">
-                            <input type="submit"  id="save" name="button" type="button" class="btn btn-info " value ="Back">
-
-                        </div>
-                    </div>
-                    <?php }?>
-                
-              
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="name">Name</label>  
-                            <div class="col-md-4">
-                                <input id="name" name="name" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->name ?>">
-
-                            </div>
-                        </div>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="LastName">Last name</label>  
-                            <div class="col-md-4">
-                                <input id="LastName" name="LastName" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->lastName ?>">
-
-                            </div>
-                        </div>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="Email">Email</label>  
-                            <div class="col-md-4">
-                                <input id="Email" name="Email" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->email ?>">
-
-                            </div>
-                        </div>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="Birthdate">Birthdate</label>  
-                            <div class="col-md-4">
-                                <input id="Birthdate" name="Birthdate" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->date ?>">
-
-                            </div>
-                        </div>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="Gender">Gender</label>  
-                            <div class="col-md-4">
-                                <input id="Gender" name="Gender" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->sexe ?>">
-
-                            </div>
-                        </div>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="Address">Address</label>  
-                            <div class="col-md-4">
-                                <input id="Address" name="Address" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->address ?>">
-
-                            </div>
-                        </div>
-                        <hr>
-                        <h3>Data connection</h3>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="userName">User name</label>  
-                            <div class="col-md-4">
-                                <input id="userName" name="userName" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $user->user ?>">
-
-                            </div>
-                        </div>
-                        <!-- Text input-->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="Password">Password</label>  
-                            <div class="col-md-4">
-                                <input id="Address" name="Password" placeholder="" class="form-control input-md" required="" type="password" value="<?php echo $user->pass ?>">
-
-                            </div>
-                        </div>
-
-                        <!-- Button -->
-                        <div class="form-group">
-                            <div class="col-md-4">
-<!--                                <input type="submit"  id="delete" name="button" type="button" class="btn btn-danger" value ="Delete">-->
-                                <input type="submit"  id="save" name="button" type="button" class="btn btn-success" value ="Save">
-
-                            </div>
-                        </div>
-
-                    </fieldset>
-                </form>
-            </div>
-            <?php
             }
             ?>
             <hr>
