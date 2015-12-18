@@ -17,23 +17,6 @@
               <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <link rel="stylesheet" href="../../css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-            .price {
-                font-size: 1.3em;
-                color: red;
-                font-weight: bold;
-            }
-            .description {
-                text-align: justify;
-            }
-            nav label{
-                color: white;
-            }
-        </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
 
@@ -139,8 +122,8 @@
                                         <hr/>
                                     <p class="description"> ' . $listProducts[$i]['description'] . '</p>
                                     <p class="price"> ' . $listProducts[$i]['price'] . ' €</p>
-                                    <p><a class="btn btn-success" href="controller.php?f=product&o=' . $listProducts[$i]['id'] . '" role="button">Mas detalles &raquo;</a></p>
-                                   <!-- <p><a class="btn btn-success" href="controller.php?f=product' . $listProducts[$i]['id'] . '" role="button">Mas detalles &raquo;</a></p> -->
+                                    <p><a class="btn btn-success" href="controller.php?f=product&o=' . $listProducts[$i]['id'] . '" role="button">More &raquo;</a></p>
+                                   <!-- <p><a class="btn btn-success" href="controller.php?f=product' . $listProducts[$i]['id'] . '" role="button">More &raquo;</a></p> -->
                                 </div>';
                     if ((($i + 1) % 3) == 0) {
                         echo'<div class="row"></div>';

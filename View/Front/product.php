@@ -16,13 +16,6 @@
               <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <link rel="stylesheet" href="../../css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-
-        </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
 
@@ -65,18 +58,6 @@
                 </div>
             </div>
         </nav>
-<!--        <p>visitar esto para .htaccess https://www.addedbytes.com/articles/for-beginners/url-rewriting-for-beginners/</p>
-        <p>Lista de cosas ha hacer</p>
-        <ol>
-            <li>que no puedan meter codigo en el formulario de contacto</li>
-            <li>redireccionar despues del email</li>
-            <li>pagina de error ( mejorar ya que el css de pende de la posicion y los enlaces tambien )</li>
-            <li>crear una pagina donde mostrar varios productos (las estilo tienda o fiverr)</li>
-            <li>crear fichero .htaccess</li>
-            <li>crear un estilo mas atractivo</li>
-            <li>rellenar los textos</li>
-            <li>hacer un sistema en el que despues de pagar (paypal) puede descargar el  fichero <br> http://entredesarrolladores.com/3051/como-integrar-una-pasarela-pago-paypal-tienda-virtual-con-php</li>
-        </ol>-->
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="container">
 
@@ -122,20 +103,21 @@
             </div>
 
         </div>
-
+        <br>
+        <br>
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
 
                 <div class="col-md-12">
-<!--                    <h2><?php echo $product['name'] ?></h2>-->
-                    <p>
+
+                    <p class="description">
 
                         <?php echo $product['description'] ?>
                     </p>
-                    <p>
+                    <p class="price">
 
-                        <?php echo $product['price'] ?>
+                        <?php echo $product['price']. ' €'?>
                     </p>
                     <button onclick ="addCookie(<?php echo $product['id']; ?>)" class="btn btn-default" href="" role="button">Add Cart</button>
                 </div>

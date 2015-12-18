@@ -16,12 +16,6 @@
               <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <link rel="stylesheet" href="../../css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
 
@@ -65,21 +59,9 @@
                 </div>
             </div>
         </nav>
-<!--        <p>visitar esto para .htaccess https://www.addedbytes.com/articles/for-beginners/url-rewriting-for-beginners/</p>
-        <p>Lista de cosas ha hacer</p>
-        <ol>
-            <li>que no puedan meter codigo en el formulario de contacto</li>
-            <li>redireccionar despues del email</li>
-            <li>pagina de error ( mejorar ya que el css de pende de la posicion y los enlaces tambien )</li>
-            <li>crear una pagina donde mostrar varios productos (las estilo tienda o fiverr)</li>
-            <li>crear fichero .htaccess</li>
-            <li>crear un estilo mas atractivo</li>
-            <li>rellenar los textos</li>
-            <li>hacer un sistema en el que despues de pagar (paypal) puede descargar el  fichero <br> http://entredesarrolladores.com/3051/como-integrar-una-pasarela-pago-paypal-tienda-virtual-con-php</li>
-        </ol>-->
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="container">
-
+                <h2  class="col-md-2 col-md-offset-5">Latest Articles</h2>
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
 
                 <div class="carousel-inner" role="listbox">
@@ -87,16 +69,20 @@
                     for ($i = 0; $i < count($slide); $i++) {
                         if ($i == 0) {
                             echo '<div class = "item active">
+                                        <a href="'.$slide[$i]['url'].'">
                                             <img src="../../img/'.$slide[$i]['image'].'" alt="" style="width:400px;height:400px;">
                                             <h2>' . $slide[$i]['title'] . '</h2>
                                             <p>' . $slide[$i]['description'] . '</p>
-                                        </div>';
+                                        </a>
+                                    </div>';
                         } else {
                             echo '<div class = "item ">
+                                        <a href="'.$slide[$i]['url'].'">    
                                             <img src="../../img/'.$slide[$i]['image'].'" alt="" style="width:400px;height:400px;">
                                             <h2>' . $slide[$i]['title'] . '</h2>
                                             <p>' . $slide[$i]['description'] . '</p>
-                                        </div>';
+                                        </a>
+                                    </div>';
                         }
                     }
                     ?>
@@ -128,25 +114,7 @@
         <br/>
         <div class="container">
             <!-- Example row of columns -->
-            <div class="row">
-
-                <?php
-                for ($i = 0; $i < count($elementos); $i++) {
-                    echo '  <div class="col-md-4">
-                                    <img src="../../img/'.$elementos[$i]['image'].'" alt="" style="width:200px;height:200px;">
-                                    <h2>' . $elementos[$i]['title'] . '</h2>
-                                        <hr/>
-                                    <p> '.$elementos[$i]['description'].'</p>
-                                    <p><a class="btn btn-default" href="'.$elementos[$i]['url'].'" role="button">Mas detalles &raquo;</a></p>
-                                </div>';
-                    if ((($i + 1) % 3) == 0) {
-                        echo'<div class="row"></div>';
-                    }
-                }
-                ?>
-
-            </div>
-
+            
             <hr>
 
             <footer>

@@ -48,7 +48,7 @@
                 </div>
                 <div class="navbar-collapse collapse in" aria-expanded="true">
                     <ul class="nav navbar-nav">
-                        <li class="activo"><a href="../../index.php">Home</a></li>
+                        <li class="activo"><a href="controller.php?f=index">Home</a></li>
                         <?php
 
                         for ($i = 0; $i < count($navegador); $i++) {

@@ -63,18 +63,18 @@ class ProductClass {
 
         $sql = "INSERT INTO `product`( `name`, `description`, `longDescription`, `price`, `idCategory`) "
                 . "VALUES ("
-                . "'$this->name ',"
-                . "'$this->description',"
-                . "'$this->longDescription',"
+                . "'".utf8_decode($this->name) ."',"
+                . "'".utf8_decode($this->description) ."',"
+                . "'".utf8_decode($this->longDescription) ."',"
                 . "'$this->price',"
                 . "'$this->category')";
 
         if (isset($this->id)) {
             $sql = 'UPDATE `product` SET';
             $sql.= '`idRow` = \'' . $this->id . '\',';
-            $sql.= '`name` = \'' . $this->name . '\',';
-            $sql.= '`description` = \'' . $this->description . '\',';
-            $sql.= '`longDescription` = \'' . $this->longDescription . '\',';
+            $sql.= '`name` = \'' . utf8_decode($this->name) . '\',';
+            $sql.= '`description` = \'' . utf8_decode($this->description) . '\',';
+            $sql.= '`longDescription` = \'' . utf8_decode($this->longDescription). '\',';
             $sql.= '`price` = \'' . $this->price . '\',';
             $sql.= '`idCategory` = \'' . $this->category . '\'';
             $sql.= ' WHERE`idRow` = \'' . $this->id . '\'';
@@ -82,8 +82,7 @@ class ProductClass {
 
         $product = $this->conex->commitSelect($sql);
         $id = $this->conex->db->lastInsertId();
-
-
+        
         return $id;
     }
     

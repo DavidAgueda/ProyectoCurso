@@ -17,7 +17,8 @@ $user = '';
 $navegador = array(
     array('string' => 'Products ', 'url' => 'controller.php?f=products'),
     array('string' => 'Cart', 'url' => 'controller.php?f=cart'),
-    array('string' => 'Login ', 'url' => 'controller.php?f=login')
+    array('string' => 'Login ', 'url' => 'controller.php?f=login'),
+    array('string' => 'Register ', 'url' => 'controller.php?f=myProfil')
 );
 
 if (isset($_SESSION['idRow'])) {
@@ -33,56 +34,36 @@ if (isset($_SESSION['idRow'])) {
 }
 
 function index() {
+    require_once '../../Model/functions.php';
+    require_once '../../Model/ProductClass.php';
     global $navegador;
     global $user;
+    global $connection;
 
-    $titulo = 'Titulo';
+    $titulo = 'David\'s SHOP';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
+    $slide=array();
 
-    $slide = array(
-        array(
-            'title' => 'Vende todo tipos de profuctos',
-            'url' => '#',
-            'description' => '<strong>Aumenta las ventas de tu tienda</strong> física o simplemente comienza un negocio con poca inversion. Con nuestras soluciones de tiendas online podrás comercializar todo tipo de productos.',
-            'image' => 'not-found.png'),
-        array(
-            'title' => 'Dise&ntilde;os personalizados',
-            'url' => '#',
-            'description' => 'Claro está que no es lo mismo vender pasteles que productos electrónicos. Nosotros adaptamos tu tienda para que sea <strong>atractiva para tus clientes</strong>.',
-            'image' => 'not-found.png'),
-        array(
-            'title' => 'Simple y funcional',
-            'url' => '#',
-            'description' => 'Las soluciones que os ofrecemos son de sobra testeadas. Lo simple y conocido normalmente es la mejor solucion.',
-            'image' => 'not-found.png')
-    );
+    $productsSlide = productsSlide($connection);
 
-    $elementos = array(
-        array(
-            'title' => 'Soluciones para todas las economias',
-            'url' => 'oferta/0',
-            'description' => 'Te ofrecemos varias posibilidades para que comiences a vender tus productos en <strong>tu tienda online </strong>desde ya. Te ofrecemos la oportunidad de comenzar desde precios realmente interesante que podrás amortizar con tus primeras ventas. Todas nuestras tiendas son desarrolladas con el máximo cuidado y son sobradamente testeadas y probadas.',
-            'image' => 'not-found.png'),
-        array(
-            'title' => 'Tu propia tienda online',
-            'url' => 'oferta/0',
-            'description' => 'Tanto si tienes una tienda física, como si es tu primera experiencia en el comercio, tener tu propia tienda virtual te aportará <strong>nuevas fuentes de ingresos</strong>. No hay nada más fácil que rellenar tu tienda de productos y esperar a que lleguen los pedidos.',
-            'image' => 'not-found.png'),
-        array(
-            'title' => 'Mejora la posicion en buscadores',
-            'url' => 'oferta/0',
-            'description' => 'Nuestro <strong>equipo de desarrollo tiene en cuenta las ultimas tecnologias</strong>. Entre estas están las técnicas de posicionamiento SEO que nuestro equipo dedicado pone a vuestra disposición para aumentar las visitas a vuestra tienda.',
-            'image' => 'not-found.png'),
-//        array('title' => 'Creacion de elementos graficos', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Creacion de elementos graficos', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Creacion de elementos graficos', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Creacion de elementos graficos', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Creacion de elementos graficos', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Creacion de elementos graficos', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Creacion de elementos graficos', 'url' => '#', 'description' => 'description', 'image' => '#'),
-//        array('title' => 'Nuestros clientes', 'url' => '#', 'description' => 'description', 'image' => '#')
-    );
+    foreach ($productsSlide as $key => $idProduct) {
+
+        $product = new ProductClass($connection);
+        $product->fetch($idProduct);
+
+        if (!isset($product->imgs[0]['name'])) {
+            $img = 'not-found.png';
+        } else {
+            $img = $product->imgs[0]['name'];
+        }
+        $slide[] = array(
+            'title' => $product->name,
+            'url' => 'controller.php?f=product&o='. $product->id,
+            'description' => $product->description,
+            'image' => $img
+        );
+    }
 
     require_once '../../View/Front/home.php';
 }
@@ -90,7 +71,7 @@ function index() {
 function contact() {
     global $navegador;
     global $user;
-    $titulo = 'Contacto';
+    $titulo = 'David\'s SHOP - Contact';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
     $options = array(
@@ -110,7 +91,7 @@ function products($category = '') {
     global $navegador;
     global $connection;
     global $user;
-    $titulo = 'Products';
+    $titulo = 'David\'s SHOP - Products';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
     $send = '';
@@ -176,7 +157,7 @@ function product($idProduct = '') {
 
     $product->fetch($idProduct);
 
-    $titulo = $product->name;
+    $titulo = 'David\'s SHOP - '.$product->name;
     $description = $product->description;
     $palabrasClaves = 'palabrasClaves';
 
@@ -199,7 +180,7 @@ function cart() {
     global $navegador;
     global $connection;
     global $user;
-    $titulo = 'Cart';
+    $titulo = 'David\'s SHOP -Cart';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
     $totalPrice = 0;
@@ -247,7 +228,7 @@ function login() {
     global $connection;
     global $user;
 
-    $titulo = 'Login';
+    $titulo = 'David\'s SHOP -Login';
     $description = 'Login';
     $palabrasClaves = 'Login';
     $viewLogin = false;
@@ -272,7 +253,7 @@ function login() {
             header('Location: ../Back/controller.php?f=index');
         } elseif ($user->roll == 2) {
             header('Location: ../Front/controller.php?f=index');
-        }else{
+        } else {
             header('Location: ../Front/controller.php?f=index');
         }
     }
@@ -287,7 +268,7 @@ function login() {
 function okMail() {
     global $navegador;
     global $user;
-    $titulo = 'Email enviado con exito';
+    $titulo = 'David\'s SHOP - Email enviado con exito';
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
     $empresa = 'Super sitios web';
@@ -308,13 +289,11 @@ function myProfil() {
     global $navegador;
     global $user;
     global $connection;
-    $titulo = 'My Profile';
+    $titulo = 'David\'s SHOP - My Profile';
     $description = '';
     $palabrasClaves = 'palabrasClaves';
 
     $from = false;
-
-    var_dump($_POST);
 
     if ($user == '') {
         require_once '../../Model/UserClass.php';
@@ -337,7 +316,10 @@ function myProfil() {
             $user->user = $_POST['userName'];
             $user->pass = $_POST['Password'];
 //                $user->roll = $_POST[''];
-            $user->setInDB();
+            $id = $user->setInDB();
+            $_SESSION['idRow'] = $id;
+            header('Location: ../Front/controller.php?f=index');
+            
         } elseif ($_POST['button'] == 'Change my data') {
             $from = true;
         } elseif ($_POST['button'] == 'Back') {

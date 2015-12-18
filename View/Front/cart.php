@@ -16,12 +16,6 @@
               <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <link rel="stylesheet" href="../../css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
 
@@ -64,19 +58,6 @@
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-<!--        <p>visitar esto para .htaccess https://www.addedbytes.com/articles/for-beginners/url-rewriting-for-beginners/</p>
-        <p>Lista de cosas ha hacer</p>
-        <ol>
-            <li>que no puedan meter codigo en el formulario de contacto</li>
-            <li>redireccionar despues del email</li>
-            <li>pagina de error ( mejorar ya que el css de pende de la posicion y los enlaces tambien )</li>
-            <li>crear una pagina donde mostrar varios productos (las estilo tienda o fiverr)</li>
-            <li>crear fichero .htaccess</li>
-            <li>crear un estilo mas atractivo</li>
-            <li>rellenar los textos</li>
-            <li>hacer un sistema en el que despues de pagar (paypal) puede descargar el  fichero <br> http://entredesarrolladores.com/3051/como-integrar-una-pasarela-pago-paypal-tienda-virtual-con-php</li>
-        </ol>-->
-        <!-- Main jumbotron for a primary marketing message or call to action -->
 
         <div class="container">
             <!-- Example row of columns -->
@@ -95,9 +76,9 @@
                                     </td>
                                     <td>
                                         <h3><?php echo $listProductsCart[$i]['name'] ?></h3>
-                                        <p><?php echo $listProductsCart[$i]['description'] ?></p>
+                                        <p class="description"><?php echo $listProductsCart[$i]['description'] ?></p>
                                     </td>
-                                    <td><?php echo $listProductsCart[$i]['price'] ?></td>
+                                    <td class="price"><?php echo $listProductsCart[$i]['price'] .'&nbsp;€' ?></td>
                                     <td><button  onclick="removeCookie(<?php echo $listProductsCart[$i]['id'] ?>)" class ="bnt btn-danger" role="button">remove from cart </button></td>
                                 </tr>
                                 <?php
@@ -112,12 +93,20 @@
 
             <hr>
             <div>
-                <p class="pull-right">Total price : <?php echo $totalPrice ?> € </p>
+                <p class=>Total price : <span class="price"><?php echo $totalPrice ?> € </span> </p>
                 <br>
             </div>
             <div>
-                <a class="btn btn-danger glyphicon " href="controller.php?f=login" roll="button">To connect</a>    
-                <a class="btn btn-danger glyphicon " href="controller.php?f=myProfil" roll="button">Create an account</a>    
+                <?php
+                    if (isset($_SESSION['idRow'])) {
+                        echo    '<a class="btn btn-success glyphicon " href="" roll="button">VALIDATE PURCHASE</a>';
+                    }else{
+                        echo    '<a class="btn btn-danger glyphicon " href="controller.php?f=login" roll="button">To connect</a>    
+                                <a class="btn btn-danger glyphicon " href="controller.php?f=myProfil" roll="button">Fegister</a> ';
+                    }
+                
+                ?>
+                
                 <br>
             </div>
 

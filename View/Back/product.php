@@ -48,7 +48,7 @@
                 </div>
                 <div class="navbar-collapse collapse in" aria-expanded="true">
                     <ul class="nav navbar-nav">
-                        <li class="activo"><a href="../../index.php">Home</a></li>
+                        <li class="activo"><a href="controller.php?f=index">Home</a></li>
                         <?php
                         for ($i = 0; $i < count($navegador); $i++) {
                             echo '<li><a href="' . $navegador[$i]['url'] . '">' . $navegador[$i]['string'] . '</a></li>';
@@ -133,7 +133,7 @@
                     </fieldset>
                 </form>
             </div>
-<?php if ($product->id != '') { ?>
+            <?php if ($product->id != '') { ?>
                 <div class="row">
                     <h2>Images</h2>
                     <form class="form-horizontal" accept-charset="utf-8" method="POST" id="enviarimagenes" enctype="multipart/form-data" >
@@ -158,35 +158,16 @@
 
                     </form>
                 </div>
-    <?php
-}
-?>
+                <?php
+            }
+            ?>
 
             <hr>
-            <div class="row">
 
-<?php
-if ($product->imgs != '') {
-    foreach ($product->imgs as $key => $value) {
-        ?>
-                        <div class="col-md-4 col-xs-4">
-                            <img  class="thumbnail" src="../../img/<?php echo $value['name']; ?>" alt="" style="width:200px;height:200px;">
-                            <label class="col-md-4 control-label" for="alt<?php echo $value['idRow'] ?>">Alt</label>               
-                            <input id="alt<?php echo $value['idRow'] ?>" name="alt<?php echo $value['idRow'] ?>" class="form-control input-md" required="" type="text" value="<?php echo $value['alt']; ?>">
-                            <hr/>
+                <div class="row" id="imgs">
 
-                            <button onclick="deleteImg(<?php echo $value['idRow'] ?>)" type="button" class="btn btn-danger">Delete</button> 
-                            <button onclick="updateImg(<?php echo $value['idRow'] ?>)" type="button" class="btn btn-success" >Save</button> 
+                </div>
 
-                        </div>
-
-        <?php
-        if ((($i + 1) % 3) == 0) {
-            echo'<div class="row"></div>';
-        }
-    }
-}
-?>
 
             </div>
 
@@ -209,6 +190,7 @@ if ($product->imgs != '') {
         <script>
                         $(document).ready(function () {
                             $('.address').hide();
+                            readImgs();
                         })
                         function hiddenAddress(button) {
 //                console.log(button);
@@ -233,7 +215,7 @@ if ($product->imgs != '') {
                     $("#mensaje").html(echo);
 
                     if (echo == '') {
-                        location.reload();
+                         readImgs();
                     }
                 }).fail(function () {
                     alert("Error uploading the picture.");
@@ -241,7 +223,7 @@ if ($product->imgs != '') {
             });
 
 
-            function deleteImg(id) {
+            var funtDelete = function deleteImg(id) {
                 var parametros = {
                     "id": id
                 };
@@ -253,7 +235,7 @@ if ($product->imgs != '') {
                     $("#mensaje").html(echo);
 
                     if (echo == '') {
-                        location.reload();
+                        readImgs();
                     }
 
                 });
@@ -273,13 +255,69 @@ if ($product->imgs != '') {
                     $("#mensaje").html(echo);
 
                     if (echo == '') {
-                        location.reload();
+                        readImgs();
                     }
 
                 });
             }
 
+            function readImgs() {
+                var parametros = {
+                    "id": <?php echo $_GET['o'] ?>
+                };
+                $.ajax({
+                    data: parametros,
+                    url: '../../Model/getImgsAjax.php',
+                    type: 'post'
+                }).done(function (echo) {
+                    echo = JSON.parse(echo);
+                    $('#imgs').html('');
+//                    console.log(echo[0]['name'])
+                    for (var i = 0; i < echo.length; i++) {
+                        var div = $('<div/>');
+                        div.addClass('col-md-4 col-xs-4');
+                        var img = $('<img/>');
+                        img.addClass('thumbnail');
+                        img.attr('src', '../../img/' + echo[i]['name']);
+                        img.attr('alt', echo[i]['alt']);
+                        img.attr('style', 'width:200px;height:200px;');
 
+                        var label = $('<label/>');
+                        label.addClass('col-md-4 control-label');
+                        label.attr('for', 'alt' + echo[i]['idRow']);
+                        label.html('Alt');
+
+                        var input = $('<input/>');
+                        input.addClass('form-control input-md');
+                        input.attr('id', 'alt' + echo[i]['idRow']);
+                        input.attr('name', 'alt' + echo[i]['idRow']);
+                        input.attr('required', '');
+                        input.attr('type', 'text');
+                        input.attr('value', echo[i]['alt']);
+
+                        var button1 = $('<button/>');
+                        button1.addClass('btn btn-danger');
+                        button1.attr('type', 'button');
+                        button1.attr('onclick', "funtDelete("+echo[i]['idRow']+")");
+                        button1.html('Delete');
+                        
+                        var button2 = $('<button/>');
+                        button2.addClass('btn btn-success');
+                        button2.attr('type', 'button');
+                        button2.attr('onclick', "updateImg("+echo[i]['idRow']+")");
+                        button2.html('Save');
+
+
+                        div.append(img);
+                        div.append(label);
+                        div.append(input);
+                        div.append(button1);
+                        div.append(button2);
+                       
+                        $('#imgs').append(div);
+                    }
+                });
+            }
 
         </script>
 

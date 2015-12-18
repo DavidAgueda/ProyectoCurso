@@ -16,57 +16,6 @@
               <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
         <link rel="stylesheet" href="../../css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-            }
-        </style>
-
-        <style>
-
-
-            .sobrepuesto{
-                position: fixed;
-                top: 0px;
-                left: 0px;
-                z-index: 3;
-                height: 100%;
-                width: 100%;
-                background-color: rgba(50,50,50,0.8);
-
-            }
-            .login{
-                position: relative;
-                top: 40%;
-                left: 40%;
-                background-color: #ffffff;
-                height: 150px;
-                width: 250px;
-                /*                padding:10px;*/
-                border: solid 3px #ccc;
-                box-shadow: 10px 20px 10px #000;
-            }
-            .login button{
-                float: right;
-                margin: 0px;
-                background-color: #ff3333;
-                border: none;
-                color:#000;
-
-            }
-            .login form{
-                width: 80%;
-                margin: 0px auto;
-                clear: both;
-            }
-
-            .login form input{
-                margin: 5px;
-            }
-
-
-        </style>
         <link rel="stylesheet" href="../../css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="../../css/main.css">
 

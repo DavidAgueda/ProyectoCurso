@@ -50,7 +50,7 @@
                 <div class="navbar-collapse collapse in" aria-expanded="true">
                     <div id="name"><h2><?php if(isset($user->name)) echo $user->name; ?></h2></div>
                     <ul class="nav navbar-nav">
-                        <li class="activo"><a href="../../index.php">Home</a></li>
+                        <li class="activo"><a href="controller.php?f=index">Home</a></li>
                         <?php
                         for ($i = 0; $i < count($navegador); $i++) {
                             if ($navegador[$i]['string'] == 'Cart') {
@@ -124,14 +124,17 @@
 
                         <!-- Form Name -->
                         <legend> User <?php echo $user->name ?>  </legend>
-                        
-                    <div class="form-group">
+                                        <?php
+                    if (isset($_SESSION['idRow'])) { ?>
+                        <div class="form-group">
                         <div class="col-md-4">
                             <input type="submit"  id="save" name="button" type="button" class="btn btn-info " value ="Back">
 
                         </div>
                     </div>
-
+                    <?php }?>
+                
+              
                         <!-- Text input-->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="name">Name</label>  

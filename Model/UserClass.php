@@ -116,6 +116,9 @@ class UserClass {
         } catch (Exception $exc) {
             echo 'Error : ' . $exc->getMessage();
         }
+        $id = $this->conex->db->lastInsertId();
+        
+        return $id;
     }
 
     public function fetch($id = '') {
