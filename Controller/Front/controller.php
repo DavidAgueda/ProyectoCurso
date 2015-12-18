@@ -95,6 +95,7 @@ function products($category = '') {
     $description = 'description';
     $palabrasClaves = 'palabrasClaves';
     $send = '';
+    $listProducts = array();
     if (isset($_GET['s'])) {
         $send = $_GET['s'];
     }
